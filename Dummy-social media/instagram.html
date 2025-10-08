@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Profile - @swetakadam</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #fafafa;
+            color: #262626;
+            line-height: 1.4;
+        }
+
+        .container {
+            max-width: 975px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            background-color: white;
+            border-bottom: 1px solid #dbdbdb;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            margin-bottom: 30px;
+        }
+
+        .header-content {
+            max-width: 975px;
+            margin: 0 auto;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #262626;
+            text-decoration: none;
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+        }
+
+        /* Profile Section */
+        .profile-section {
+            background-color: white;
+            border: 1px solid #dbdbdb;
+            border-radius: 8px;
+            padding: 40px;
+            margin-bottom: 30px;
+            display: flex;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .profile-picture {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 3px solid #e1306c;
+            padding: 3px;
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+        }
+
+        .profile-picture img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid white;
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .username {
+            font-size: 28px;
+            font-weight: 300;
+            color: #262626;
+        }
+
+        .follow-btn {
+            background-color: #0095f6;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .follow-btn:hover {
+            background-color: #1877f2;
+        }
+
+        .profile-stats {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 20px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-weight: 600;
+            font-size: 16px;
+            color: #262626;
+        }
+
+        .stat-label {
+            color: #8e8e8e;
+            font-size: 14px;
+        }
+
+        .profile-bio {
+            max-width: 400px;
+        }
+
+        .bio-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #262626;
+        }
+
+        .bio-text {
+            color: #262626;
+            line-height: 1.5;
+        }
+
+        /* Posts Section */
+        .posts-section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #262626;
+            text-align: center;
+            border-bottom: 1px solid #dbdbdb;
+            padding-bottom: 10px;
+        }
+
+        .post-item-container {
+            background-color: white;
+            border: 1px solid #dbdbdb;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            /* Space between individual posts */
+            overflow: hidden;
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            padding: 14px 16px;
+            border-bottom: 1px solid #efefef;
+        }
+
+        .post-profile-pic {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            margin-right: 12px;
+            object-fit: cover;
+        }
+
+        .post-username {
+            font-weight: 600;
+            font-size: 14px;
+            color: #262626;
+        }
+
+        .post-item {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1;
+            /* Ensures square aspect ratio for images */
+            overflow: hidden;
+        }
+
+        .post-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Post Actions */
+        .post-actions {
+            background-color: white;
+            padding: 12px 16px;
+            border-bottom: 1px solid #efefef;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 8px;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 24px;
+            padding: 0;
+            transition: transform 0.1s ease;
+        }
+
+        .action-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .action-btn.liked {
+            color: #ed4956;
+        }
+
+        .likes-count {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .post-caption {
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .username-caption {
+            font-weight: 600;
+            margin-right: 5px;
+        }
+
+        .comment-section {
+            display: none;
+            /* Hidden by default */
+            padding: 0 16px 12px;
+            background-color: white;
+            /* border-bottom: 1px solid #efefef; */
+            /* Only apply if you want a bottom border after last comment */
+        }
+
+        .comment-section.show {
+            display: block;
+        }
+
+        .comment {
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .comment-username {
+            font-weight: 600;
+            margin-right: 5px;
+        }
+
+        .add-comment {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+            border-top: 1px solid #efefef;
+            /* Separator for comment input */
+            padding-top: 8px;
+        }
+
+        .comment-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 14px;
+            padding: 8px 0;
+        }
+
+        .comment-input::placeholder {
+            color: #8e8e8e;
+        }
+
+        /* Trending Hashtags */
+        .hashtags-section {
+            background-color: white;
+            border: 1px solid #dbdbdb;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .hashtags-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #262626;
+        }
+
+        .hashtags-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .hashtag {
+            background-color: #f0f0f0;
+            color: #0095f6;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .hashtag:hover {
+            background-color: #e0e0e0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .profile-section {
+                flex-direction: column;
+                text-align: center;
+                gap: 30px;
+                padding: 30px 20px;
+            }
+
+            .profile-picture {
+                width: 120px;
+                height: 120px;
+            }
+
+            .profile-header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .username {
+                font-size: 24px;
+            }
+
+            .profile-stats {
+                justify-content: center;
+                gap: 30px;
+            }
+
+            /* For smaller screens, posts will stack vertically */
+            .posts-grid {
+                grid-template-columns: 1fr;
+                /* Removed as we're now stacking full posts */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .profile-stats {
+                gap: 20px;
+            }
+        }
+
+
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 200;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        .modal-content h2 {
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .modal-content form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .modal-content input {
+            padding: 10px;
+            border: 1px solid #dbdbdb;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .close-btn {
+            float: right;
+            font-size: 22px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <a href="#" class="logo">Instagram</a>
+            <div class="nav-icons">
+                <div class="nav-icon">🏠</div>
+                <div class="nav-icon">💬</div>
+                <div class="nav-icon">❤️</div>
+                <div class="nav-icon">👤</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Profile Section -->
+        <div class="profile-section">
+            <div class="profile-picture">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'%3E%3Ccircle cx='75' cy='75' r='75' fill='%23e1306c'/%3E%3Ccircle cx='75' cy='60' r='25' fill='white'/%3E%3Ccircle cx='75' cy='110' r='35' fill='white'/%3E%3C/svg%3E"
+                    alt="Profile Picture">
+            </div>
+            <div class="profile-info">
+                <div class="profile-header">
+                    <h1 class="username">swetakadam</h1>
+                    <button class="follow-btn">Follow</button>
+                </div>
+                <div class="profile-stats">
+                    <div class="stat">
+                        <div class="stat-number">152</div>
+                        <div class="stat-label">posts</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">2,847</div>
+                        <div class="stat-label">followers</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">1,204</div>
+                        <div class="stat-label">following</div>
+                    </div>
+                </div>
+                <div class="profile-bio">
+                    <div class="bio-name">Sweta Kadam</div>
+                    <div class="bio-text">✨ Creative soul & dreamer<br>📚 Tech enthusiast<br>🎨 Digital artist<br>📍
+                        Mumbai, India</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Posts Section -->
+        <div class="posts-section">
+            <h2 class="section-title">Posts</h2>
+            <!-- Posts will be dynamically loaded here by JavaScript -->
+        </div>
+
+        <!-- Trending Hashtags Section -->
+        <div class="hashtags-section">
+            <h3 class="hashtags-title">Trending Hashtags</h3>
+            <div class="hashtags-list">
+                <span class="hashtag">#photography</span>
+                <span class="hashtag">#travel</span>
+                <span class="hashtag">#sunset</span>
+                <span class="hashtag">#coffee</span>
+                <span class="hashtag">#adventure</span>
+                <span class="hashtag">#nature</span>
+                <span class="hashtag">#lifestyle</span>
+                <span class="hashtag">#explore</span>
+                <span class="hashtag">#wanderlust</span>
+                <span class="hashtag">#beautiful</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Post Button -->
+    <div class="post-btn-container" style="text-align:center; margin-bottom:20px;">
+        <button id="openPostModal" class="follow-btn">+ New Post</button>
+    </div>
+
+    <!-- Modal for creating new post -->
+    <div id="postModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Create New Post</h2>
+            <form id="postForm">
+                <input type="text" id="caption" placeholder="Write a caption..." required>
+                <input type="text" id="imageUrl" placeholder="Image URL..." required>
+                <input type="text" id="hashtags" placeholder="Hashtags (comma separated)">
+                <button type="submit" class="follow-btn">Post</button>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        // Import Firebase modules
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import {
+            getFirestore, collection, addDoc, getDocs, query, orderBy, limit,
+            updateDoc, doc, increment, arrayUnion, serverTimestamp
+        } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        // ✅ Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyD9ebL8xEeGjHOHxBsUtRY1IL65qm30zD4",
+            authDomain: "social-f6c78.firebaseapp.com",
+            projectId: "social-f6c78",
+            storageBucket: "social-f6c78.appspot.com",
+            messagingSenderId: "959340204769",
+            appId: "1:959340204769:web:0e049a80321ea701a15da0",
+            measurementId: "G-GCWJMNGPGN"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // ✅ Fetch posts from Firestore
+        async function fetchInstagramPosts() {
+            try {
+                // ⚙️ Temporarily remove orderBy for debugging if createdAt missing
+                const q = query(
+                    collection(db, 'instagram'),
+                    orderBy('createdAt', 'desc'),
+                    limit(10)
+                );
+
+                const querySnapshot = await getDocs(q);
+                const posts = [];
+                querySnapshot.forEach((docSnap) => {
+                    posts.push({ id: docSnap.id, ...docSnap.data() });
+                });
+
+                console.log("✅ Fetched posts:", posts);
+                return posts;
+            } catch (error) {
+                console.error("❌ Error fetching posts:", error);
+                return [];
+            }
+        }
+
+        // ✅ Render posts
+        function renderInstagramPosts(posts) {
+            const postsSection = document.querySelector('.posts-section');
+            if (!postsSection) {
+                console.error("❌ No .posts-section found in HTML!");
+                return;
+            }
+
+            // Clear previous posts
+            postsSection.querySelectorAll('.post-item-container').forEach(post => post.remove());
+
+            if (posts.length === 0) {
+                postsSection.innerHTML = `<p style="color:white;text-align:center;">No posts found.</p>`;
+                return;
+            }
+
+            posts.forEach((post) => {
+                const postElement = createPostElement(post);
+                postsSection.appendChild(postElement);
+            });
+        }
+
+        // ✅ Create single post element
+        function createPostElement(post) {
+            const postContainer = document.createElement('div');
+            postContainer.className = 'post-item-container';
+            postContainer.dataset.postId = post.id;
+
+            const commentsHtml = (post.comments || []).map(comment => `
+                <div class="comment">
+                    <span class="comment-username">${comment.username}</span>
+                    ${comment.text}
+                </div>
+            `).join('');
+
+            const likesCount = typeof post.likes === 'number' ? post.likes : 0;
+
+            postContainer.innerHTML = `
+                <div class="post-header">
+                    <img src="${post.userAvatar}" alt="Profile" class="post-profile-pic">
+                    <span class="post-username">${post.username}</span>
+                </div>
+                <div class="post-item">
+                    <img src="${post.imageUrl}" alt="${post.caption?.substring(0, 30) || ''}..." class="post-image">
+                </div>
+                <div class="post-actions">
+                    <div class="action-buttons">
+                        <button class="action-btn like-btn" onclick="toggleLike(this)">🤍</button>
+                        <button class="action-btn comment-btn" onclick="toggleComments(this)">💬</button>
+                        <button class="action-btn share-btn">📤</button>
+                    </div>
+                    <div class="likes-count">${likesCount} likes</div>
+                    <div class="post-caption">
+                        <span class="username-caption">${post.username}</span>
+                        ${post.caption || ''} ${(post.hashtags || []).join(' ')}
+                    </div>
+                </div>
+                <div class="comment-section">
+                    ${commentsHtml}
+                    <div class="add-comment">
+                        <input type="text" class="comment-input" placeholder="Add a comment..." onkeypress="handleComment(event, this)">
+                    </div>
+                </div>
+            `;
+            return postContainer;
+        }
+
+        // ✅ Like a post
+        async function toggleLike(button) {
+            const isLiked = button.classList.contains('liked');
+            const likesCountElement = button.closest('.post-actions').querySelector('.likes-count');
+            const postContainer = button.closest('.post-item-container');
+            const postId = postContainer.dataset.postId;
+
+            let currentLikes = parseInt(likesCountElement.textContent.replace(' likes', '')) || 0;
+            const incrementValue = isLiked ? -1 : 1;
+
+            // Update UI instantly
+            if (isLiked) {
+                button.innerHTML = '🤍';
+                button.classList.remove('liked');
+                currentLikes--;
+            } else {
+                button.innerHTML = '❤️';
+                button.classList.add('liked');
+                currentLikes++;
+            }
+            likesCountElement.textContent = currentLikes + ' likes';
+
+            // Update Firestore
+            if (postId) {
+                try {
+                    const postRef = doc(db, 'instagram', postId);
+                    await updateDoc(postRef, {
+                        likes: increment(incrementValue),
+                        updatedAt: serverTimestamp()
+                    });
+                } catch (error) {
+                    console.error('Error updating like:', error);
+                }
+            }
+        }
+
+        // ✅ Toggle comments
+        function toggleComments(button) {
+            const commentSection = button.closest('.post-item-container').querySelector('.comment-section');
+            commentSection.classList.toggle('show');
+        }
+
+        // ✅ Handle comment
+        async function handleComment(event, input) {
+            if (event.key === 'Enter' && input.value.trim() !== '') {
+                const commentSection = input.closest('.comment-section');
+                const postContainer = input.closest('.post-item-container');
+                const postId = postContainer.dataset.postId;
+                const commentText = input.value.trim();
+                const currentUser = "swetakadam";
+
+                // Add to UI
+                const newCommentElement = document.createElement('div');
+                newCommentElement.className = 'comment';
+                newCommentElement.innerHTML = `<span class="comment-username">${currentUser}</span> ${commentText}`;
+                commentSection.insertBefore(newCommentElement, commentSection.querySelector('.add-comment'));
+                input.value = '';
+                commentSection.classList.add('show');
+
+                // Save to Firestore
+                if (postId) {
+                    try {
+                        const postRef = doc(db, 'instagram', postId);
+                        const newCommentData = {
+                            id: Date.now().toString(),
+                            username: currentUser,
+                            text: commentText,
+                            timestamp: new Date()
+                        };
+                        await updateDoc(postRef, {
+                            comments: arrayUnion(newCommentData),
+                            updatedAt: serverTimestamp()
+                        });
+                    } catch (error) {
+                        console.error('Error adding comment:', error);
+                    }
+                }
+            }
+        }
+
+        // ✅ Handle NEW POST creation
+        document.getElementById("postForm")?.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const caption = document.getElementById("caption").value.trim();
+            const imageUrl = document.getElementById("imageUrl").value.trim();
+            const hashtags = document.getElementById("hashtags").value.trim().split(",").map(tag => tag.trim());
+
+            if (!caption || !imageUrl) {
+                alert("Caption and Image URL are required!");
+                return;
+            }
+
+            try {
+                await addDoc(collection(db, "instagram"), {
+                    platform: "instagram",
+                    username: "swetakadam",
+                    userDisplayName: "Sweta Kadam",
+                    userAvatar: "https://ui-avatars.com/api/?name=Sweta+Kadam&background=e1306c&color=fff",
+                    caption,
+                    imageUrl,
+                    hashtags,
+                    likes: 0,
+                    likedBy: [],
+                    comments: [],
+                    createdAt: serverTimestamp(),
+                    updatedAt: serverTimestamp(),
+                    views: 0,
+                    shares: 0
+                });
+
+                alert("Post created successfully!");
+                document.getElementById("postForm").reset();
+                document.getElementById("postModal").style.display = "none";
+
+                // Refresh posts
+                const posts = await fetchInstagramPosts();
+                renderInstagramPosts(posts);
+
+            } catch (error) {
+                console.error("Error creating post:", error);
+                alert("Failed to create post.");
+            }
+        });
+
+        // ✅ Modal handling
+        const postModal = document.getElementById("postModal");
+        const openPostModalBtn = document.getElementById("openPostModal");
+        const closeBtn = document.querySelector(".close-btn");
+
+        openPostModalBtn?.addEventListener("click", () => postModal.style.display = "flex");
+        closeBtn?.addEventListener("click", () => postModal.style.display = "none");
+        window.onclick = (e) => { if (e.target == postModal) postModal.style.display = "none"; };
+
+        // ✅ Init
+        window.addEventListener('DOMContentLoaded', async () => {
+            console.log("📡 Fetching posts...");
+            const posts = await fetchInstagramPosts();
+            renderInstagramPosts(posts);
+        });
+
+        // Make functions global
+        window.toggleLike = toggleLike;
+        window.toggleComments = toggleComments;
+        window.handleComment = handleComment;
+    </script>
+
+</body>
+
+</html>

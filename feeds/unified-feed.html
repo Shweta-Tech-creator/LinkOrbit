@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Unified Feed</title>
+  <style>
+    html {
+      background-color: #0b0f19;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Lemonada", cursive;
+      overflow-x: hidden;
+    }
+
+    .hero-section {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      font-size: 29px;
+      font-weight: 800;
+      background: linear-gradient(90deg, #00d4ff, #ff6a00, #ff1493);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 2px;
+      position: absolute;
+      top: 15px;
+      left: 30px;
+      opacity: 1;
+      transform: scale(1);
+
+    }
+
+    .aura {
+      position: absolute;
+      top: -120px;
+      left: -90px;
+      width: 500px;
+      height: 300px;
+      background: radial-gradient(circle at center,
+          rgba(255, 200, 0, 0.4),
+          rgba(0, 56, 113, 0.35),
+          rgba(80, 0, 43, 0.25),
+          transparent 75%);
+      border-radius: 50%;
+      filter: blur(80px);
+      animation: auraPop 2.5s ease-out forwards;
+      z-index: -1;
+    }
+
+    @keyframes auraPop {
+      0% {
+        transform: scale(0.6);
+        opacity: 0;
+      }
+
+      60% {
+        transform: scale(1.1);
+        opacity: 1;
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: 0.85;
+      }
+    }
+
+    .logo {
+      width: 40px;
+      height: 40px;
+      margin: 0 6px;
+      animation: spin 16s linear infinite;
+    }
+
+    @keyframes spin {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Navbar */
+    .navbar {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: sans-serif;
+    }
+
+    .navbar ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      gap: 80px;
+    }
+
+    .navbar a {
+      text-decoration: none;
+      color: #f0f0f0;
+      font-size: 20px;
+      font-weight: 700;
+      transition: color 0.3s ease;
+    }
+
+    .navbar a:hover {
+      color: #ff6a00;
+    }
+
+    /* 🔹 User profile top-right */
+    #user-info {
+      position: absolute;
+      top: 20px;
+      right: 25px;
+      font-family: Arial, sans-serif;
+      /* ✅ simple font */
+    }
+
+    #user-pic {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid #ff6a00;
+      /* subtle highlight */
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    #user-pic:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 8px rgba(255, 106, 0, 0.6);
+    }
+
+    /* 🔹 Dropdown menu */
+    #profile-menu {
+      position: absolute;
+      top: 60px;
+      right: 20px;
+      background: #11141b;
+      color: #f1f1f1;
+      border-radius: 12px;
+      padding: 15px;
+      width: 230px;
+      display: none;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+      font-family: Arial, sans-serif;
+      animation: fadeSlide 0.25s ease forwards;
+      z-index: 2000;
+    }
+
+    @keyframes fadeSlide {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    #profile-menu p {
+      margin: 6px 0;
+      font-size: 14px;
+      color: #ddd;
+    }
+
+    #profile-menu p strong {
+      font-size: 16px;
+      color: #fff;
+    }
+
+    #profile-menu hr {
+      border: 0;
+      border-top: 1px solid #333;
+      margin: 10px 0;
+    }
+
+    #profile-menu .menu-btn {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border: none;
+      border-radius: 6px;
+      background: #2a2f3a;
+      color: #f0f0f0;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      text-align: left;
+      transition: background 0.2s ease;
+    }
+
+    #profile-menu .menu-btn:hover {
+      background: #ff6a00;
+      color: white;
+    }
+
+    #profile-menu .logout-btn {
+      background: #ff6a00;
+      color: white;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    #profile-menu .logout-btn:hover {
+      background: #ff4500;
+    }
+
+    input.hamburger {
+      display: none;
+    }
+
+    label.hamburger {
+      z-index: 1001;
+      position: fixed;
+      top: 18px;
+      left: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 28px;
+      width: 34px;
+      cursor: pointer;
+    }
+
+    label.hamburger>i,
+    label.hamburger>i::before,
+    label.hamburger>i::after {
+      background: white;
+      border-radius: 2px;
+      content: "";
+      display: block;
+      width: 100%;
+      height: 3px;
+      position: absolute;
+      transition: all 0.3s ease;
+    }
+
+    label.hamburger>i::before {
+      transform: translateY(-8px);
+    }
+
+    label.hamburger>i::after {
+      transform: translateY(8px);
+    }
+
+    input.hamburger:checked+label.hamburger>i {
+      background: transparent;
+    }
+
+    input.hamburger:checked+label.hamburger>i::before {
+      transform: rotate(45deg);
+    }
+
+    input.hamburger:checked+label.hamburger>i::after {
+      transform: rotate(-45deg);
+    }
+
+    /* 🔹 Sidebar (glass style) */
+    .primnav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 300px;
+      padding-top: 70px;
+      background: rgba(13, 24, 48, 0.5);
+      /* navy glass look */
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-right: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 2px 0 15px rgba(0, 0, 0, 0.3);
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+      z-index: 1000;
+      display: flex;
+      /* 👈 add */
+      flex-direction: column;
+      /* 👈 add */
+      justify-content: space-between;
+      /* 👈 pushes last item to bottom */
+    }
+
+    input.hamburger:checked~nav.primnav {
+      transform: translateX(0);
+    }
+
+    /* 🔹 Navigation items */
+    .primnav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      flex-grow: 1;
+      width: 95%;
+    }
+
+    .primnav li {
+      margin: 10px 0;
+    }
+
+    .primnav li a {
+      display: flex;
+      align-items: center;
+      padding: 15px 20px;
+      color: white;
+      font-weight: 600;
+      font-size: 16px;
+      font-family: Arial, sans-serif;
+      text-decoration: none;
+      border-radius: 10px;
+      transition: background 0.3s ease, padding-left 0.3s ease, transform 0.2s ease;
+    }
+
+    .primnav li a:hover {
+      background: rgba(255, 255, 255, 0.15);
+      padding-left: 28px;
+      transform: translateX(5px);
+    }
+
+    /* Dashboard items styling */
+    .dashboard-item {
+      position: relative;
+      margin-left: 15px !important;
+      font-size: 16px !important;
+      font-weight: 500 !important;
+      border-left: 3px solid rgba(255, 106, 0, 0.3);
+      padding-left: 18px !important;
+      margin-bottom: 8px !important;
+    }
+
+    .dashboard-item:hover {
+      border-left-color: #ff6a00;
+      background: rgba(255, 106, 0, 0.1);
+      font-weight: 600 !important;
+    }
+
+    /* Main dashboard title */
+    #dashboard-main {
+      background: linear-gradient(135deg, rgba(255, 106, 0, 0.2), rgba(0, 212, 255, 0.2));
+      border: 1px solid rgba(255, 106, 0, 0.3);
+      margin-bottom: 20px !important;
+      font-weight: 700 !important;
+      font-size: 22px !important;
+      padding: 18px 20px !important;
+    }
+
+    #dashboard-main:hover {
+      background: linear-gradient(135deg, rgba(255, 106, 0, 0.3), rgba(0, 212, 255, 0.3));
+      border-color: #ff6a00;
+    }
+
+    /* 🔹 Submenu */
+    .secnav {
+      margin-left: 20px;
+      border-left: 1px solid rgba(255, 255, 255, 0.2);
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.4s ease;
+    }
+
+    input.hamburger:checked~nav.primnav .secnav {
+      max-height: 300px;
+    }
+
+    .secnav li a {
+      font-size: 14px;
+      padding: 10px 18px;
+      color: #cfd8dc;
+    }
+
+    .secnav li a:hover {
+      color: white;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Move dashboard to bottom-left */
+    .primnav {
+      top: auto !important;
+      bottom: 0 !important;
+      border-top-right-radius: 12px;
+    }
+
+    /* Keep hamburger button near bottom */
+    label.hamburger {
+      top: auto !important;
+      bottom: 20px !important;
+    }
+
+
+    .feed-filters {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin: 20px auto;
+      /* instead of negative margins */
+      padding: 10px;
+      position: relative;
+      /* ensure above overlapping elements */
+      z-index: 2;
+      margin-top: -850px;
+    }
+
+
+    .feed-filters button {
+      padding: 8px 20px;
+      border: none;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      background: #1f2430;
+      color: #fff;
+      transition: background 0.3s ease;
+    }
+
+    .feed-filters button:hover,
+    .feed-filters button.active {
+      background: #ff6a00;
+      color: #fff;
+    }
+
+    /* Unified Feed Grid */
+
+
+    /* 🔹 Feed Container */
+    /* 🔹 Feed Container */
+    .feed-container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      /* exactly 4 per row */
+      font-family: Arial, Helvetica, sans-serif;
+      gap: 10px;
+      /* reduce spacing */
+      padding: 10px 10px;
+      margin-top: 15px;
+      justify-items: start;
+      /* remove centering, cards align neatly */
+      margin-left: 50px;
+      /* small margin */
+
+    }
+
+    /* 🔹 Post Card */
+    .pf-card {
+      background: #141821;
+      border-radius: 12px;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.35);
+      padding: 12px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      color: #fff;
+      position: relative;
+      width: 75%;
+      /* slightly smaller so they fit tighter */
+      height: 400px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .pf-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.5);
+    }
+
+    /* 🔹 Platform Badge */
+    .platform-badge {
+      margin-left: auto;
+      width: 18px;
+      height: 18px;
+      object-fit: contain;
+      opacity: 0.9;
+    }
+
+    /* 🔹 Header */
+    .pf-card header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .pf-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 2px solid #ff6a00;
+    }
+
+    /* 🔹 Media (fixed height) */
+    .pf-media {
+      border-radius: 8px;
+      overflow: hidden;
+      width: 100%;
+      height: 150px;
+      /* fixed image size */
+      margin-bottom: 8px;
+    }
+
+    .pf-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* 🔹 Body (truncated if too long) */
+    .pf-body {
+      font-size: 13px;
+      color: #e0e0e0;
+      line-height: 1.4;
+      flex: 1;
+      /* expand in remaining space */
+      overflow: hidden;
+    }
+
+    .pf-body .pf-text {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      /* max 3 lines */
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .pf-body .pf-time {
+      margin-top: 6px;
+      font-size: 11px;
+      color: #9aa4ad;
+    }
+
+    #chat-box {
+      position: fixed;
+      bottom: 80px;
+      right: 30px;
+      width: 320px;
+      height: 400px;
+      display: none;
+      flex-direction: column;
+      background: #111727;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+    }
+
+    #chat-header {
+      background: #1e293b;
+      padding: 10px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    #chat-messages {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+    }
+
+    .message {
+      margin: 6px 0;
+      padding: 8px 10px;
+      border-radius: 8px;
+      max-width: 90%;
+    }
+
+    .user {
+      background: #2563eb;
+      align-self: flex-end;
+    }
+
+    .bot {
+      background: #334155;
+      align-self: flex-start;
+    }
+
+    #chat-input {
+      display: flex;
+      background: #1e293b;
+    }
+
+    #user-input {
+      flex: 1;
+      padding: 8px;
+      background: transparent;
+      border: none;
+      color: #fff;
+      outline: none;
+    }
+
+    #send-btn {
+      background: #2563eb;
+      border: none;
+      color: white;
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+
+    #bot-button {
+      position: fixed;
+      bottom: 20px;
+      right: 30px;
+      background: #2563eb;
+      color: #fff;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 50px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+
+
+  <!-- First Section -->
+  <div class="hero-section">
+    <div class="brand">
+      <div class="aura"></div>
+      Link
+      <svg class="logo" viewBox="0 0 200 200"></svg>
+      rbit
+    </div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <ul>
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="feature.html">Features</a></li>
+      <li><a href="/features/pricing.html">Pricing/Plans</a></li>
+      <li><a href="/features/about.html">About</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- 🔹 User Info (Pic only) -->
+  <div id="user-info">
+    <img id="user-pic" src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="User">
+  </div>
+
+  <!-- 🔹 Profile Dropdown -->
+  <div id="profile-menu">
+    <p><strong id="user-name">User Name</strong></p>
+    <p id="user-email">user@email.com</p>
+    <hr>
+    <button id="logout-btn" class="menu-btn logout-btn">🚪 Log Out</button>
+
+  </div>
+
+
+
+  <div class="brand">
+    <div class="aura"></div>
+    Link
+    <svg class="logo" viewBox="0 0 200 200">
+      <defs>
+        <linearGradient id="gradYellow" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#FFD700" />
+          <stop offset="100%" stop-color="#FFA500" />
+        </linearGradient>
+        <linearGradient id="gradPink" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#FF69B4" />
+          <stop offset="100%" stop-color="#FF1493" />
+        </linearGradient>
+        <linearGradient id="gradBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#00BFFF" />
+          <stop offset="100%" stop-color="#1E90FF" />
+        </linearGradient>
+        <linearGradient id="gradOrange" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#FF8C00" />
+          <stop offset="100%" stop-color="#FF4500" />
+        </linearGradient>
+      </defs>
+      <path d="M100 20 C140 40, 170 70, 180 100 C170 80, 140 50, 100 40 Z" fill="url(#gradYellow)" />
+      <path d="M180 100 C170 140, 140 170, 100 180 C120 170, 150 140, 160 100 Z" fill="url(#gradPink)" />
+      <path d="M100 180 C60 170, 30 140, 20 100 C40 120, 70 150, 100 160 Z" fill="url(#gradBlue)" />
+      <path d="M20 100 C40 60, 70 30, 100 20 C80 40, 50 70, 40 100 Z" fill="url(#gradOrange)" />
+    </svg> rbit
+  </div>
+
+  <!-- Hamburger Menu -->
+  <input id="hamburger" class="hamburger" type="checkbox" />
+  <label for="hamburger" class="hamburger">
+    <i></i>
+  </label>
+
+  <!-- Sidebar -->
+  <nav class="primnav">
+    <ul>
+      <li style="font-size: 22px; margin-bottom: 20px;"><a href="#dashboard" id="dashboard-main">Dashboard</a></li>
+      <li>
+        <a href="/features/feature.html" class="dashboard-item">Overview</a>
+      </li>
+      <li>
+        <a href="/feeds/unified-feed.html" class="dashboard-item" id="unified-feed">Unified Feed</a>
+      </li>
+      <li>
+        <a href="/feeds/postAndSchedule.html" class="dashboard-item">Post & Schedule</a>
+      </li>
+      <li>
+        <a href="/feeds/analytics.html" class="dashboard-item">Quick Stats + Analytics</a>
+      </li>
+      <li>
+        <a href="/feeds/commentManager.html" class="dashboard-item">Comments Manager</a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Filters -->
+  <div class="feed-filters">
+    <button type="button" class="active" data-platform="all">All</button>
+    <button type="button" data-platform="instagram">Instagram</button>
+    <button type="button" data-platform="facebook">Facebook</button>
+    <button type="button" data-platform="linkedin">LinkedIn</button>
+  </div>
+
+
+  <!-- Unified Feed -->
+  <div id="public-feed" class="feed-container" style="font-family: Arial, Helvetica, sans-serif;"></div>
+
+
+  <button id="bot-button">🤖 Chat</button>
+
+  <div id="chat-box" style="font-family: Arial, Helvetica, sans-serif;">
+    <div id="chat-header" style="color: white;">AI Risk Monitor</div>
+    <div id="chat-messages"></div>
+    <div id="chat-input">
+      <input type="text" id="user-input" placeholder="Type message..." />
+      <button id="send-btn">Send</button>
+    </div>
+  </div>
+
+
+
+  <script type="module">
+    // ------------------ IMPORTS ------------------
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getFirestore, collection, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+
+    // ------------------ FIREBASE CONFIG ------------------
+    const firebaseConfig = {
+      apiKey: "AIzaSyD9ebL8xEeGjHOHxBsUtRY1IL65qm30zD4",
+      authDomain: "social-f6c78.firebaseapp.com",
+      projectId: "social-f6c78",
+      storageBucket: "social-f6c78.appspot.com",
+      messagingSenderId: "959340204769",
+      appId: "1:959340204769:web:0e049a80321ea701a15da0",
+      measurementId: "G-GCWJMNGPGN"
+    };
+
+    // ------------------ INIT ------------------
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    // ------------------ AUTH ------------------
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        document.getElementById("user-name").textContent = user.displayName || "User";
+        document.getElementById("user-email").textContent = user.email;
+        document.getElementById("user-pic").src =
+          user.photoURL || "https://cdn-icons-png.flaticon.com/512/847/847969.png";
+      } else {
+        window.location.href = "/login.html";
+      }
+    });
+
+    document.getElementById("logout-btn")?.addEventListener("click", () => {
+      signOut(auth).then(() => {
+        window.location.href = "/login.html";
+      });
+    });
+
+    document.getElementById("user-pic")?.addEventListener("click", () => {
+      const menu = document.getElementById("profile-menu");
+      menu.style.display = menu.style.display === "block" ? "none" : "block";
+    });
+
+    // ------------------ HELPERS ------------------
+    function timeAgo(date) {
+      const now = new Date();
+      const diff = (now - new Date(date)) / 1000;
+      if (diff < 60) return `${Math.floor(diff)}s ago`;
+      if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+      if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+      return `${Math.floor(diff / 86400)}d ago`;
+    }
+
+    function escapeHtml(text) {
+      return String(text || '').replace(/[&<>"']/g, (ch) => (
+        { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]
+      ));
+    }
+
+    // ------------------ FETCH POSTS ------------------
+    async function fetchInstagramPosts() {
+      const q = query(collection(db, 'instagram'), orderBy('createdAt', 'desc'), limit(10));
+      const querySnapshot = await getDocs(q);
+      const posts = [];
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        const createdAt = data.createdAt?.toDate ? data.createdAt.toDate() : new Date();
+        posts.push({
+          id: doc.id,
+          source: "instagram",
+          username: data.username || 'swetakadam',
+          userDisplayName: data.userDisplayName || 'Sweta Kadam',
+          userAvatar: data.userAvatar || 'https://via.placeholder.com/36',
+          content: data.caption || '',
+          title: data.title || '(No title)',
+          imageUrl: data.imageUrl || '',
+          likes: data.likes || 0,
+          comments: data.comments || [],
+          hashtags: data.hashtags || [],
+          createdAt,
+          timeAgo: timeAgo(createdAt)
+        });
+      });
+      return posts;
+    }
+
+    async function fetchFacebookPosts() {
+      const q = query(collection(db, 'facebook'), orderBy('createdAt', 'desc'), limit(10));
+      const querySnapshot = await getDocs(q);
+      const posts = [];
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        const createdAt = data.createdAt?.toDate ? data.createdAt.toDate() : new Date();
+        posts.push({
+          id: doc.id,
+          source: "facebook",
+          username: data.username || 'swetakadam',
+          userDisplayName: data.userDisplayName || 'Sweta Kadam',
+          userAvatar: data.userAvatar || 'https://cdn-icons-png.flaticon.com/512/733/733547.png',
+          content: data.caption || '',
+          title: data.title || '(No title)',
+          imageUrl: data.imageUrl || '',
+          likes: data.likes || 0,
+          comments: data.comments || [],
+          hashtags: data.hashtags || [],
+          createdAt,
+          timeAgo: timeAgo(createdAt)
+        });
+      });
+      return posts;
+    }
+
+    async function fetchLinkedInPosts() {
+      const q = query(collection(db, 'linkedin'), orderBy('createdAt', 'desc'), limit(10));
+      const querySnapshot = await getDocs(q);
+      const posts = [];
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        const createdAt = data.createdAt?.toDate ? data.createdAt.toDate() : new Date();
+        posts.push({
+          id: doc.id,
+          source: "linkedin",
+          username: data.username || 'swetakadam',
+          userDisplayName: data.userDisplayName || 'Sweta Kadam',
+          userAvatar: data.userAvatar || 'https://cdn-icons-png.flaticon.com/512/3536/3536505.png',
+          content: data.content || data.caption || '',   // 👈 fixed here
+          title: data.title || '(No title)',
+          imageUrl: data.imageUrl || '',
+          likes: data.likes || 0,
+          comments: data.comments || [],
+          hashtags: data.hashtags || [],
+          createdAt,
+          timeAgo: timeAgo(createdAt)
+        });
+      });
+      return posts;
+    }
+
+    // ------------------ CREATE POST CARD ------------------
+    function createFeedPostElement(post) {
+      const postDiv = document.createElement('div');
+      postDiv.className = 'pf-card';
+
+      let badge = "";
+      if (post.source === "instagram") {
+        badge = `<img src="https://cdn-icons-png.flaticon.com/512/1384/1384063.png" alt="Instagram" class="platform-badge">`;
+      } else if (post.source === "facebook") {
+        badge = `<img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook" class="platform-badge">`;
+      } else if (post.source === "linkedin") {
+        badge = `<img src="https://cdn-icons-png.flaticon.com/512/3536/3536505.png" alt="LinkedIn" class="platform-badge">`;
+      }
+
+      postDiv.innerHTML = `
+      <header>
+        <img src="${post.userAvatar}" alt="Avatar" class="pf-avatar">
+        <div style="flex:1">
+          <div style="font-size: 14px;">${escapeHtml(post.userDisplayName)}</div>
+          <div style="font-size: 12px; color: #9aa4ad;">@${escapeHtml(post.username)}</div>
+        </div>
+        ${badge}
+      </header>
+      ${post.imageUrl ? `<div class="pf-media"><img src="${post.imageUrl}" alt="Post image"></div>` : ''}
+      <div class="pf-body">
+        <h3 style="font-size:16px; color:#fff; margin-bottom:6px;">${escapeHtml(post.title)}</h3>  <!-- 👈 TITLE ADDED HERE -->
+        <div class="pf-text" style="margin-bottom: 8px;">${escapeHtml(post.content)}</div>
+        ${post.hashtags && post.hashtags.length > 0 ? `<div style="color: #64b5f6; font-size: 13px;">${post.hashtags.join(' ')}</div>` : ''}
+        <div style="margin-top: 10px; display: flex; gap: 15px; color: #9aa4ad; font-size: 13px;">
+          <span>❤️ ${post.likes}</span>
+          <span>💬 ${post.comments.length}</span>
+        </div>
+        <div class="pf-time">${post.timeAgo}</div>
+      </div>
+    `;
+      return postDiv;
+    }
+
+
+    // ------------------ RENDER ------------------
+    function renderUnifiedFeed(posts, filter = "all") {
+      const feedContainer = document.getElementById('public-feed');
+      feedContainer.innerHTML = '';
+
+      const normFilter = (filter || 'all').trim().toLowerCase();
+      const filtered = normFilter === "all"
+        ? posts
+        : posts.filter(p => (p.source || '').trim().toLowerCase() === normFilter);
+
+      if (filtered.length === 0) {
+        feedContainer.innerHTML = `<p style="color:#999; text-align:center;">No posts available</p>`;
+        return;
+      }
+
+      const frag = document.createDocumentFragment();
+      filtered.forEach(post => frag.appendChild(createFeedPostElement(post)));
+      feedContainer.appendChild(frag);
+    }
+
+    // ------------------ FILTER BUTTONS ------------------
+    function setupFilters(mergedFeed) {
+      const container = document.querySelector('.feed-filters');
+      if (!container) return;
+
+      container.addEventListener('click', (e) => {
+        const btn = e.target.closest('button[data-platform]');
+        if (!btn) return;
+
+        container.querySelectorAll('button[data-platform]').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const platform = (btn.getAttribute('data-platform') || 'all').trim().toLowerCase();
+        renderUnifiedFeed(mergedFeed, platform);
+      });
+    }
+
+    // ------------------ INIT FEED ------------------
+    window.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const instaPosts = await fetchInstagramPosts();
+        const fbPosts = await fetchFacebookPosts();
+        const liPosts = await fetchLinkedInPosts();
+
+        const mergedFeed = [...instaPosts, ...fbPosts, ...liPosts];
+        mergedFeed.sort((a, b) => (b.createdAt?.getTime?.() || 0) - (a.createdAt?.getTime?.() || 0));
+
+        renderUnifiedFeed(mergedFeed, "all");
+        setupFilters(mergedFeed);
+
+        console.log('Initial posts loaded:', mergedFeed.length);
+        console.log('Sources present:', mergedFeed.map(p => p.source));
+      } catch (err) {
+        console.error('Failed to init feed', err);
+      }
+    });
+
+
+
+    //chatbottt
+
+    // Risk Keywords
+    const riskKeywords = {
+      negative: ["hate", "awful", "bad", "worst", "terrible", "stupid", "angry", "disgusting"],
+      report: ["report", "spam", "block", "remove", "ban", "flag"],
+      controversial: ["fake", "scam", "violence", "boycott", "politics", "crime", "abuse", "threat"]
+    };
+
+    const alertQueue = [];
+    const seenDocPaths = new Set(); // prevent duplicate alerts between initial load and realtime
+    const allowedPlatforms = new Set(["facebook", "instagram", "linkedin"]);
+    let monitoringActive = false; // controls whether alerts are shown immediately
+
+    function normalizePlatformFromPath(path, fallback) {
+      try {
+        const seg0 = (path || "").split("/")[0]?.toLowerCase();
+        if (allowedPlatforms.has(seg0)) return seg0;
+      } catch { }
+      const lower = (fallback || "").toLowerCase();
+      if (allowedPlatforms.has(lower)) return lower;
+      return ""; // return empty when unknown so UI won't show 'comments'
+    }
+
+    // Binary Search
+    function binarySearch(arr, word) {
+      let low = 0, high = arr.length - 1;
+      while (low <= high) {
+        const mid = Math.floor((low + high) / 2);
+        if (arr[mid] === word) return true;
+        else if (arr[mid] < word) low = mid + 1;
+        else high = mid - 1;
+      }
+      return false;
+    }
+
+    // Normalize text content from various possible shapes
+    function normalizeText(value) {
+      if (typeof value === "string") return value;
+      if (Array.isArray(value)) return value.map(v => (typeof v === "string" ? v : "")).join(" ");
+      if (value && typeof value === "object") {
+        if (typeof value.text === "string") return value.text;
+        const strings = Object.values(value).filter(v => typeof v === "string");
+        if (strings.length) return strings.join(" ");
+        try { return JSON.stringify(value); } catch { return ""; }
+      }
+      if (value == null) return "";
+      try { return String(value); } catch { return ""; }
+    }
+
+    // Analyze Text
+    function analyzeText(data, source) {
+      const contentRaw = data.comment || data.comments || data.text || data.caption || data.captions || "";
+      const content = normalizeText(contentRaw);
+      if (!content || (typeof content === "string" && !content.trim())) return;
+      const platformLabel = allowedPlatforms.has((source || "").toLowerCase()) ? source : (source || "");
+      console.log(`📘 Checking comment from ${platformLabel}:`, content);
+
+      const words = (content.toLowerCase().match(/\b[\p{L}\p{N}_'-]+\b/gu) || []);
+      for (let type in riskKeywords) {
+        const sortedList = riskKeywords[type].sort();
+        for (let word of words) {
+          if (binarySearch(sortedList, word)) {
+            enqueueAlert({
+              platform: platformLabel || "",
+              postId: data.postId || data.id || "N/A",
+              reason: `⚠️ ${type.toUpperCase()} keyword detected`,
+              text: content
+            });
+            console.log(`🚨 [${platformLabel}] Risk Detected: "${word}" in → ${content}`);
+            return;
+          }
+        }
+      }
+    }
+
+    // Alert Queue
+    function enqueueAlert(alert) {
+      alertQueue.push(alert);
+      if (monitoringActive) {
+        displayAlert(alert);
+      }
+    }
+
+    function displayAlert(alert) {
+      const msg = document.createElement("div");
+      msg.className = "message bot";
+      msg.innerHTML = `${alert.reason}<br>Platform: ${alert.platform}<br>Text: "${alert.text}"`;
+      document.getElementById("chat-messages").appendChild(msg);
+      scrollBottom();
+    }
+
+    function scrollBottom() {
+      const chat = document.getElementById("chat-messages");
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    // Monitor Firestore
+    const collections = ["facebook", "instagram", "linkedin"];
+    console.log("🔍 Scanning all collections for risky keywords...");
+    let initialTopLevelReady = false;
+    let initialCommentsReady = false;
+    let loadedCollections = 0;
+
+    function maybeAnnounceReady() {
+      if (initialTopLevelReady && initialCommentsReady) {
+        const botMsg = document.createElement("div");
+        botMsg.className = "message bot";
+        botMsg.innerText = "✅ Initial scan complete. Real-time monitoring now active.";
+        document.getElementById("chat-messages").appendChild(botMsg);
+      }
+    }
+
+    // Initial fetch for top-level collections, then start realtime for new docs
+    (async () => {
+      try {
+        for (const col of collections) {
+          console.log(`🔎 Running initial fetch for '${col}'...`);
+          const ref = collection(db, col);
+          const snap = await getDocs(ref);
+          let initCount = 0;
+          snap.forEach((doc) => {
+            const path = doc.ref.path;
+            if (!seenDocPaths.has(path)) seenDocPaths.add(path);
+            const data = doc.data();
+            analyzeText({ ...data, platform: col }, col);
+            initCount++;
+          });
+          console.log(`✅ Initial ${col} loaded: ${initCount}`);
+        }
+      } catch (err) {
+        console.error("❌ Initial top-level fetch error:", err);
+        const botMsg = document.createElement("div");
+        botMsg.className = "message bot";
+        botMsg.innerText = `⚠️ Initial top-level fetch error: ${err.message}`;
+        document.getElementById("chat-messages").appendChild(botMsg);
+      } finally {
+        if (!initialTopLevelReady) {
+          initialTopLevelReady = true;
+          maybeAnnounceReady();
+        }
+      }
+
+      // Realtime after initial fetch
+      collections.forEach((col) => {
+        const ref = collection(db, col);
+        onSnapshot(ref, (snapshot) => {
+          loadedCollections++;
+          console.log(`📡 Listening to ${col} collection...`);
+          snapshot.docChanges().forEach((change) => {
+            if (change.type !== "added") return;
+            const path = change.doc.ref.path;
+            if (seenDocPaths.has(path)) return; // already processed in initial fetch
+            seenDocPaths.add(path);
+            analyzeText({ ...change.doc.data(), platform: col }, col);
+          });
+        }, (err) => {
+          console.error(`❌ Realtime error on ${col}:`, err);
+          const botMsg = document.createElement("div");
+          botMsg.className = "message bot";
+          botMsg.innerText = `⚠️ Realtime error on ${col}: ${err.message}`;
+          document.getElementById("chat-messages").appendChild(botMsg);
+        });
+      });
+    })();
+
+    // Initial fetch + realtime for nested comments via collection group: */posts/*/comments
+    (async () => {
+      try {
+        const cg = collectionGroup(db, "comments");
+        console.log("🔎 Running initial collection group fetch for 'comments'...");
+        const initSnap = await getDocs(cg);
+        let initCount = 0;
+        initSnap.forEach((doc) => {
+          const path = doc.ref.path;
+          seenDocPaths.add(path);
+          const data = doc.data();
+          const platform = normalizePlatformFromPath(path, data.platform);
+          analyzeText({ ...data, platform }, platform || "");
+          initCount++;
+        });
+        console.log(`✅ Initial comments loaded: ${initCount}`);
+      } catch (err) {
+        console.error("❌ Initial comments fetch error:", err);
+        const botMsg = document.createElement("div");
+
+        document.getElementById("chat-messages").appendChild(botMsg);
+      } finally {
+        if (!initialCommentsReady) {
+          initialCommentsReady = true;
+          maybeAnnounceReady();
+        }
+      }
+
+      try {
+        const commentsCg = collectionGroup(db, "comments");
+        console.log("📡 Subscribing to realtime 'comments' collection group...");
+        onSnapshot(commentsCg, (snapshot) => {
+          snapshot.docChanges().forEach((change) => {
+            if (change.type !== "added") return;
+            const path = change.doc.ref.path; // e.g., facebook/POST_ID/comments/COMMENT_ID
+            if (seenDocPaths.has(path)) return;
+            seenDocPaths.add(path);
+            const data = change.doc.data();
+            const platform = normalizePlatformFromPath(path, data.platform);
+            analyzeText({ ...data, platform }, platform || "");
+          });
+        }, (err) => {
+          console.error("❌ Realtime comments error:", err);
+          const botMsg = document.createElement("div");
+          botMsg.className = "message bot";
+          botMsg.innerText = `⚠️ Realtime comments error: ${err.message}`;
+          document.getElementById("chat-messages").appendChild(botMsg);
+        });
+      } catch (err) {
+        console.error("❌ Failed to subscribe to comments realtime:", err);
+      }
+    })();
+
+    // Chat UI
+    const botBtn = document.getElementById("bot-button");
+    const chatBox = document.getElementById("chat-box");
+    botBtn.onclick = () => {
+      chatBox.style.display = chatBox.style.display === "flex" ? "none" : "flex";
+    };
+
+    document.getElementById("send-btn").onclick = () => {
+      const input = document.getElementById("user-input");
+      const text = input.value.trim();
+      if (!text) return;
+
+      const userMsg = document.createElement("div");
+      userMsg.className = "message user";
+      userMsg.innerText = text;
+      document.getElementById("chat-messages").appendChild(userMsg);
+      scrollBottom();
+
+      botReply(text);
+      input.value = "";
+    };
+
+    function botReply(text) {
+      let reply = "🤖 I didn’t understand that.";
+      const lower = text.toLowerCase();
+      if (lower === "risk" || lower === "risk on" || lower.includes("enable risk")) {
+        monitoringActive = true;
+        reply = "✅ Risk monitoring enabled. I will display alerts in real time.";
+        // display any queued alerts (last 5) as a kick-off
+        const recent = alertQueue.slice(-5);
+        if (recent.length) {
+          recent.forEach(displayAlert);
+        }
+      } else if (lower === "risk off" || lower.includes("disable risk") || lower.includes("pause")) {
+        monitoringActive = false;
+        reply = "⏸️ Risk monitoring paused. I will keep scanning silently.";
+      } else if (lower.includes("alert")) {
+        reply = `You have ${alertQueue.length} alerts detected so far.`;
+      } else if (lower.includes("clear")) {
+        alertQueue.length = 0;
+        reply = "✅ All alerts cleared.";
+      } else if (lower.includes("summary")) {
+        reply = `📊 Summary: ${alertQueue.length} risks detected across all platforms.`;
+      }
+      const botMsg = document.createElement("div");
+      botMsg.className = "message bot";
+      botMsg.innerText = reply;
+      document.getElementById("chat-messages").appendChild(botMsg);
+      scrollBottom();
+    }
+
+  </script>
+
+
+
+
+
+
+</body>
+
+</html>

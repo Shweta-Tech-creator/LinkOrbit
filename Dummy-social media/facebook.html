@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sweta Kadam - Facebook UI</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f2f5;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Navbar */
+    .navbar {
+      background: #1877f2;
+      color: white;
+      padding: 8px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .navbar-left {
+      display: flex;
+      align-items: center;
+    }
+
+    .navbar-left img {
+      width: 34px;
+      margin-right: 8px;
+    }
+
+    .navbar-left span {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .navbar input {
+      padding: 6px 10px;
+      border-radius: 20px;
+      border: none;
+      width: 220px;
+      outline: none;
+    }
+
+    /* Layout */
+    .layout {
+      display: flex;
+      justify-content: center;
+      max-width: 1000px;
+      margin: 20px auto;
+      gap: 20px;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 220px;
+      background: white;
+      padding: 12px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      height: fit-content;
+    }
+
+    .sidebar h3 {
+      font-size: 15px;
+      margin-bottom: 8px;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 5px;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .sidebar ul li {
+      margin: 8px 0;
+      color: #1877f2;
+      font-weight: 500;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    /* Profile */
+    .main-content {
+      flex: 1;
+      max-width: 650px;
+    }
+
+    .profile-header {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      margin-bottom: 15px;
+    }
+
+    .cover-photo {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .profile-info {
+      padding: 15px;
+      text-align: center;
+      position: relative;
+    }
+
+    .profile-pic {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 4px solid white;
+      position: absolute;
+      top: -60px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #eee;
+      object-fit: cover;
+    }
+
+    .profile-name {
+      margin-top: 70px;
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    .bio {
+      font-size: 14px;
+      color: #555;
+      margin-top: 5px;
+    }
+
+    /* Feed */
+    .feed {
+      margin-top: 15px;
+    }
+
+    .post-item-container {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      margin-bottom: 15px;
+      padding: 12px;
+      max-width: 100%;
+    }
+
+    .post-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+      gap: 8px;
+    }
+
+    .post-profile-pic {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+    }
+
+    .post-username {
+      font-weight: bold;
+    }
+
+    .post-time {
+      font-size: 12px;
+      color: #777;
+      margin-left: auto;
+    }
+
+    .post-item img {
+      max-width: 100%;
+      border-radius: 6px;
+      margin-top: 6px;
+    }
+
+    .post-actions {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 8px;
+      font-size: 13px;
+      color: #65676b;
+      font-weight: 500;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .comment-section {
+      margin-top: 10px;
+      display: none;
+    }
+
+    .comment-section.show {
+      display: block;
+    }
+
+    .comment {
+      font-size: 13px;
+      margin-bottom: 5px;
+    }
+
+    .add-comment input {
+      width: 100%;
+      padding: 5px;
+      font-size: 13px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    /* Floating Button */
+    #openFbPostModal {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #1877f2;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      font-size: 28px;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Modal */
+    #fbPostModal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+    }
+
+    #fbPostModal .modal-content {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      width: 400px;
+      position: relative;
+    }
+
+    .fb-close-btn {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    #facebookPostForm input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+    }
+
+    #facebookPostForm button {
+      background: #1877f2;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  <div class="navbar">
+    <div class="navbar-left">
+      <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook Logo">
+      <span>Facebook</span>
+    </div>
+    <input type="text" placeholder="Search Facebook">
+  </div>
+
+  <div class="layout">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <h3>Trending Hashtags</h3>
+      <ul>
+        <li>#CodingLife</li>
+        <li>#Hackathon</li>
+        <li>#TechEnthusiast</li>
+        <li>#CoffeeAndCode</li>
+        <li>#DreamBig</li>
+      </ul>
+    </div>
+
+    <!-- Main Profile + Feed -->
+    <div class="main-content">
+      <!-- Profile Section -->
+      <div class="profile-header">
+        <img src="https://picsum.photos/900/200?random=1" class="cover-photo" alt="Cover">
+        <div class="profile-info">
+          <img src="https://picsum.photos/120?random=2" class="profile-pic" alt="Profile">
+          <div class="profile-name">Sweta Kadam</div>
+          <div class="bio">🌸 Tech Enthusiast | Coder | Dreamer 🌸</div>
+        </div>
+      </div>
+
+      <!-- Feed from Firestore -->
+      <div class="feed posts-section"></div>
+    </div>
+  </div>
+
+  <!-- Floating Button -->
+  <button id="openFbPostModal">+</button>
+
+  <!-- Post Modal -->
+  <div id="fbPostModal">
+    <div class="modal-content">
+      <span class="fb-close-btn">✖</span>
+      <h3>Create Facebook Post</h3>
+      <form id="facebookPostForm">
+        <input type="text" id="fbCaption" placeholder="Write something..." required>
+        <input type="text" id="fbImageUrl" placeholder="Image URL (optional)">
+        <input type="text" id="fbHashtags" placeholder="Hashtags (comma separated)">
+        <button type="submit">Post</button>
+      </form>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+    import { getFirestore, collection, addDoc, getDocs, query, orderBy, limit, updateDoc, doc, increment, arrayUnion, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD9ebL8xEeGjHOHxBsUtRY1IL65qm30zD4",
+      authDomain: "social-f6c78.firebaseapp.com",
+      projectId: "social-f6c78",
+      storageBucket: "social-f6c78.appspot.com",
+      messagingSenderId: "959340204769",
+      appId: "1:959340204769:web:0e049a80321ea701a15da0",
+      measurementId: "G-GCWJMNGPGN"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Fetch posts
+    async function fetchFacebookPosts() {
+      try {
+        const q = query(collection(db, 'facebook'), orderBy('createdAt', 'desc'), limit(10));
+        const querySnapshot = await getDocs(q);
+        const posts = [];
+        querySnapshot.forEach((doc) => {
+          posts.push({ id: doc.id, ...doc.data() });
+        });
+        return posts;
+      } catch (error) {
+        console.error("Error fetching Facebook posts:", error);
+        return [];
+      }
+    }
+
+    // Render posts
+    function renderFacebookPosts(posts) {
+      const postsSection = document.querySelector('.posts-section');
+      if (!postsSection) return;
+      postsSection.innerHTML = "";
+
+      posts.forEach((post) => {
+        const postElement = createFacebookPostElement(post);
+        postsSection.appendChild(postElement);
+      });
+    }
+
+    // Single Post UI
+    function createFacebookPostElement(post) {
+      const postContainer = document.createElement('div');
+      postContainer.className = 'post-item-container';
+      postContainer.dataset.postId = post.id;
+
+      const commentsHtml = (post.comments || []).map(comment => `
+        <div class="comment">
+          <span class="comment-username">${comment.username}</span> ${comment.text}
+        </div>
+      `).join('');
+
+      const likesCount = typeof post.likes === 'number' ? post.likes : 0;
+
+      postContainer.innerHTML = `
+        <div class="post-header">
+          <img src="${post.userAvatar}" alt="Profile" class="post-profile-pic">
+          <span class="post-username">${post.username}</span>
+          <span class="post-time">${post.createdAt?.toDate ? post.createdAt.toDate().toLocaleString() : ""}</span>
+        </div>
+        <div class="post-item">
+          ${post.imageUrl ? `<img src="${post.imageUrl}" alt="" class="post-image">` : ""}
+          <p class="post-caption"><span class="username-caption">${post.username}</span> ${post.caption} ${(post.hashtags || []).join(' ')}</p>
+        </div>
+        <div class="post-actions">
+          <div class="action-buttons">
+            <button class="action-btn like-btn" onclick="toggleLike(this, 'facebook')">🤍</button>
+            <button class="action-btn comment-btn" onclick="toggleComments(this)">💬</button>
+            <button class="action-btn share-btn">📤</button>
+          </div>
+          <div class="likes-count">${likesCount} likes</div>
+        </div>
+        <div class="comment-section">
+          ${commentsHtml}
+          <div class="add-comment">
+            <input type="text" class="comment-input" placeholder="Add a comment..." onkeypress="handleComment(event, this, 'facebook')">
+          </div>
+        </div>
+      `;
+      return postContainer;
+    }
+
+    // LIKE
+    async function toggleLike(button, platform) {
+      const isLiked = button.classList.contains('liked');
+      const likesCountElement = button.closest('.post-actions').querySelector('.likes-count');
+      const postContainer = button.closest('.post-item-container');
+      const postId = postContainer.dataset.postId;
+
+      let currentLikes = parseInt(likesCountElement.textContent.replace(' likes', ''));
+      const incrementValue = isLiked ? -1 : 1;
+
+      if (isLiked) {
+        button.innerHTML = '🤍';
+        button.classList.remove('liked');
+        currentLikes--;
+      } else {
+        button.innerHTML = '❤️';
+        button.classList.add('liked');
+        currentLikes++;
+      }
+      likesCountElement.textContent = currentLikes + ' likes';
+
+      if (postId) {
+        try {
+          const postRef = doc(db, platform, postId);
+          await updateDoc(postRef, { likes: increment(incrementValue), updatedAt: serverTimestamp() });
+        } catch (error) {
+          console.error('Error updating like:', error);
+        }
+      }
+    }
+
+    // Comments
+    function toggleComments(button) {
+      const commentSection = button.closest('.post-item-container').querySelector('.comment-section');
+      commentSection.classList.toggle('show');
+    }
+
+    async function handleComment(event, input, platform) {
+      if (event.key === 'Enter' && input.value.trim() !== '') {
+        const commentSection = input.closest('.comment-section');
+        const postContainer = input.closest('.post-item-container');
+        const postId = postContainer.dataset.postId;
+        const commentText = input.value.trim();
+        const currentUser = "swetakadam";
+
+        const newCommentElement = document.createElement('div');
+        newCommentElement.className = 'comment';
+        newCommentElement.innerHTML = `<span class="comment-username">${currentUser}</span> ${commentText}`;
+        commentSection.insertBefore(newCommentElement, commentSection.querySelector('.add-comment'));
+        input.value = '';
+        commentSection.classList.add('show');
+
+        if (postId) {
+          try {
+            const postRef = doc(db, platform, postId);
+            const newCommentData = {
+              id: Date.now().toString(),
+              username: currentUser,
+              text: commentText,
+              timestamp: new Date()
+            };
+            await updateDoc(postRef, { comments: arrayUnion(newCommentData), updatedAt: serverTimestamp() });
+          } catch (error) {
+            console.error('Error adding comment:', error);
+          }
+        }
+      }
+    }
+
+    // Handle new post
+    document.getElementById("facebookPostForm")?.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const caption = document.getElementById("fbCaption").value.trim();
+      const imageUrl = document.getElementById("fbImageUrl").value.trim();
+      const hashtags = document.getElementById("fbHashtags").value.trim().split(",").map(tag => tag.trim());
+
+      if (!caption && !imageUrl) {
+        alert("Please enter text or image for the post.");
+        return;
+      }
+
+      try {
+        await addDoc(collection(db, "facebook"), {
+          platform: "facebook",
+          username: "swetakadam",
+          userDisplayName: "Sweta Kadam",
+          userAvatar: "https://ui-avatars.com/api/?name=Sweta+Kadam&background=1877f2&color=fff",
+          caption,
+          imageUrl,
+          hashtags,
+          likes: 0,
+          likedBy: [],
+          comments: [],
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp(),
+          views: 0,
+          shares: 0
+        });
+
+        alert("✅ Facebook post created successfully!");
+        document.getElementById("facebookPostForm").reset();
+        document.getElementById("fbPostModal").style.display = "none";
+
+        const posts = await fetchFacebookPosts();
+        renderFacebookPosts(posts);
+
+      } catch (error) {
+        console.error("Error creating Facebook post:", error);
+        alert("❌ Failed to create post.");
+      }
+    });
+
+    // Modal handling
+    const fbPostModal = document.getElementById("fbPostModal");
+    const openFbPostModalBtn = document.getElementById("openFbPostModal");
+    const closeFbBtn = document.querySelector(".fb-close-btn");
+
+    openFbPostModalBtn?.addEventListener("click", () => fbPostModal.style.display = "flex");
+    closeFbBtn?.addEventListener("click", () => fbPostModal.style.display = "none");
+    window.onclick = (e) => { if (e.target == fbPostModal) fbPostModal.style.display = "none"; };
+
+    // Init
+    window.addEventListener('DOMContentLoaded', async () => {
+      const posts = await fetchFacebookPosts();
+      if (posts.length > 0) renderFacebookPosts(posts);
+    });
+
+    // Make global
+    window.toggleLike = toggleLike;
+    window.toggleComments = toggleComments;
+    window.handleComment = handleComment;
+  </script>
+</body>
+
+</html>

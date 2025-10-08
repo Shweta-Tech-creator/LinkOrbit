@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="formstyle.css">
+  <style>
+    html {
+      background-color: #0b0f19;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Lemonada", cursive;
+      overflow-x: hidden;
+    }
+
+    .hero-section {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      font-size: 29px;
+      font-weight: 800;
+      background: linear-gradient(90deg, #00d4ff, #ff6a00, #ff1493);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 2px;
+      position: absolute;
+      top: 15px;
+      left: 30px;
+      opacity: 1;
+      transform: scale(1);
+
+    }
+
+    .aura {
+      position: absolute;
+      top: -120px;
+      left: -90px;
+      width: 500px;
+      height: 300px;
+      background: radial-gradient(circle at center,
+          rgba(255, 200, 0, 0.4),
+          rgba(0, 56, 113, 0.35),
+          rgba(80, 0, 43, 0.25),
+          transparent 75%);
+      border-radius: 50%;
+      filter: blur(80px);
+      animation: auraPop 2.5s ease-out forwards;
+      z-index: -1;
+    }
+
+    @keyframes auraPop {
+      0% {
+        transform: scale(0.6);
+        opacity: 0;
+      }
+
+      60% {
+        transform: scale(1.1);
+        opacity: 1;
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: 0.85;
+      }
+    }
+
+    .logo {
+      width: 40px;
+      height: 40px;
+      margin: 0 6px;
+      animation: spin 16s linear infinite;
+    }
+
+    @keyframes spin {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Navbar */
+    .navbar {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: sans-serif;
+    }
+
+    .navbar ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      gap: 80px;
+    }
+
+    .navbar a {
+      text-decoration: none;
+      color: #f0f0f0;
+      font-size: 20px;
+      font-weight: 700;
+      transition: color 0.3s ease;
+    }
+
+    .navbar a:hover {
+      color: #ff6a00;
+    }
+
+    /* 🔹 User profile top-right */
+    #user-info {
+      position: absolute;
+      top: 20px;
+      right: 25px;
+      font-family: Arial, sans-serif;
+      /* ✅ simple font */
+    }
+
+    #user-pic {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid #ff6a00;
+      /* subtle highlight */
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    #user-pic:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 8px rgba(255, 106, 0, 0.6);
+    }
+
+    /* 🔹 Dropdown menu */
+    #profile-menu {
+      position: absolute;
+      top: 60px;
+      right: 20px;
+      background: #11141b;
+      color: #f1f1f1;
+      border-radius: 12px;
+      padding: 15px;
+      width: 230px;
+      display: none;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+      font-family: Arial, sans-serif;
+      animation: fadeSlide 0.25s ease forwards;
+    }
+
+    @keyframes fadeSlide {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    #profile-menu p {
+      margin: 6px 0;
+      font-size: 14px;
+      color: #ddd;
+    }
+
+    #profile-menu p strong {
+      font-size: 16px;
+      color: #fff;
+    }
+
+    #profile-menu hr {
+      border: 0;
+      border-top: 1px solid #333;
+      margin: 10px 0;
+    }
+
+    #profile-menu .menu-btn {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border: none;
+      border-radius: 6px;
+      background: #2a2f3a;
+      color: #f0f0f0;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      text-align: left;
+      transition: background 0.2s ease;
+    }
+
+    #profile-menu .menu-btn:hover {
+      background: #ff6a00;
+      color: white;
+    }
+
+    #profile-menu .logout-btn {
+      background: #ff6a00;
+      color: white;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    #profile-menu .logout-btn:hover {
+      background: #ff4500;
+    }
+
+    input.hamburger {
+      display: none;
+    }
+
+    label.hamburger {
+      z-index: 1001;
+      position: fixed;
+      top: 18px;
+      left: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 28px;
+      width: 34px;
+      cursor: pointer;
+    }
+
+    label.hamburger>i,
+    label.hamburger>i::before,
+    label.hamburger>i::after {
+      background: white;
+      border-radius: 2px;
+      content: "";
+      display: block;
+      width: 100%;
+      height: 3px;
+      position: absolute;
+      transition: all 0.3s ease;
+    }
+
+    label.hamburger>i::before {
+      transform: translateY(-8px);
+    }
+
+    label.hamburger>i::after {
+      transform: translateY(8px);
+    }
+
+    input.hamburger:checked+label.hamburger>i {
+      background: transparent;
+    }
+
+    input.hamburger:checked+label.hamburger>i::before {
+      transform: rotate(45deg);
+    }
+
+    input.hamburger:checked+label.hamburger>i::after {
+      transform: rotate(-45deg);
+    }
+
+    /* 🔹 Sidebar (glass style) */
+    .primnav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 300px;
+      padding-top: 70px;
+      background: rgba(13, 24, 48, 0.5);
+      /* navy glass look */
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-right: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 2px 0 15px rgba(0, 0, 0, 0.3);
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+      z-index: 1000;
+      display: flex;
+      /* 👈 add */
+      flex-direction: column;
+      /* 👈 add */
+      justify-content: space-between;
+      /* 👈 pushes last item to bottom */
+    }
+
+    input.hamburger:checked~nav.primnav {
+      transform: translateX(0);
+    }
+
+    /* 🔹 Navigation items */
+    .primnav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      flex-grow: 1;
+      margin-top: -60px;
+      width: 95%;
+    }
+
+    .primnav li {
+      margin: 10px 0;
+    }
+
+    .primnav li a {
+      display: flex;
+      align-items: center;
+      padding: 15px 20px;
+      color: white;
+      font-weight: 600;
+      font-size: 16px;
+      font-family: Arial, sans-serif;
+      text-decoration: none;
+      border-radius: 10px;
+      transition: background 0.3s ease, padding-left 0.3s ease, transform 0.2s ease;
+    }
+
+    .primnav li a:hover {
+      background: rgba(255, 255, 255, 0.15);
+      padding-left: 28px;
+      transform: translateX(5px);
+    }
+
+    /* Dashboard items styling */
+    .dashboard-item {
+      position: relative;
+      margin-left: 15px !important;
+      font-size: 16px !important;
+      font-weight: 500 !important;
+      border-left: 3px solid rgba(255, 106, 0, 0.3);
+      padding-left: 18px !important;
+      margin-bottom: 8px !important;
+    }
+
+    .dashboard-item:hover {
+      border-left-color: #ff6a00;
+      background: rgba(255, 106, 0, 0.1);
+      font-weight: 600 !important;
+    }
+
+    /* Main dashboard title */
+    #dashboard-main {
+      background: linear-gradient(135deg, rgba(255, 106, 0, 0.2), rgba(0, 212, 255, 0.2));
+      border: 1px solid rgba(255, 106, 0, 0.3);
+      margin-bottom: 20px !important;
+      font-weight: 700 !important;
+      font-size: 22px !important;
+      padding: 18px 20px !important;
+    }
+
+    #dashboard-main:hover {
+      background: linear-gradient(135deg, rgba(255, 106, 0, 0.3), rgba(0, 212, 255, 0.3));
+      border-color: #ff6a00;
+    }
+
+    /* 🔹 Submenu */
+    .secnav {
+      margin-left: 20px;
+      border-left: 1px solid rgba(255, 255, 255, 0.2);
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.4s ease;
+    }
+
+    input.hamburger:checked~nav.primnav .secnav {
+      max-height: 300px;
+    }
+
+    .secnav li a {
+      font-size: 14px;
+      padding: 10px 18px;
+      color: #cfd8dc;
+    }
+
+    .secnav li a:hover {
+      color: white;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Move dashboard to bottom-left */
+    .primnav {
+      top: auto !important;
+      bottom: 0 !important;
+      border-top-right-radius: 12px;
+    }
+
+    /* Keep hamburger button near bottom */
+    label.hamburger {
+      top: auto !important;
+      bottom: 20px !important;
+    }
+  </style>
+</head>
+
+<body>
+
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <ul>
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="feature.html">Features</a></li>
+      <li><a href="/features/pricing.html">Pricing/Plans</a></li>
+      <li><a href="/features/about.html">About</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- 🔹 User Info (Pic only) -->
+  <div id="user-info">
+    <img id="user-pic" src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="User">
+  </div>
+
+  <!-- 🔹 Profile Dropdown -->
+  <div id="profile-menu">
+    <p><strong id="user-name">User Name</strong></p>
+    <p id="user-email">user@email.com</p>
+    <hr>
+    <button id="logout-btn" class="menu-btn logout-btn">🚪 Log Out</button>
+
+  </div>
+
+
+
+  <div class="brand">
+    <div class="aura"></div>
+    Link
+    <svg class="logo" viewBox="0 0 200 200">
+      <defs>
+        <linearGradient id="gradYellow" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#FFD700" />
+          <stop offset="100%" stop-color="#FFA500" />
+        </linearGradient>
+        <linearGradient id="gradPink" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#FF69B4" />
+          <stop offset="100%" stop-color="#FF1493" />
+        </linearGradient>
+        <linearGradient id="gradBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#00BFFF" />
+          <stop offset="100%" stop-color="#1E90FF" />
+        </linearGradient>
+        <linearGradient id="gradOrange" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#FF8C00" />
+          <stop offset="100%" stop-color="#FF4500" />
+        </linearGradient>
+      </defs>
+      <path d="M100 20 C140 40, 170 70, 180 100 C170 80, 140 50, 100 40 Z" fill="url(#gradYellow)" />
+      <path d="M180 100 C170 140, 140 170, 100 180 C120 170, 150 140, 160 100 Z" fill="url(#gradPink)" />
+      <path d="M100 180 C60 170, 30 140, 20 100 C40 120, 70 150, 100 160 Z" fill="url(#gradBlue)" />
+      <path d="M20 100 C40 60, 70 30, 100 20 C80 40, 50 70, 40 100 Z" fill="url(#gradOrange)" />
+    </svg> rbit
+  </div>
+
+
+
+  <!-- Hamburger Menu -->
+  <input id="hamburger" class="hamburger" type="checkbox" />
+  <label for="hamburger" class="hamburger">
+    <i></i>
+  </label>
+
+
+
+  <!-- Sidebar -->
+  <nav class="primnav">
+    <ul>
+      <li style="font-size: 22px; margin-bottom: 20px;"><a href="#dashboard" id="dashboard-main">Dashboard</a></li>
+      <li>
+        <a href="/features/feature.html" class="dashboard-item">Overview </a>
+      </li>
+      <li>
+        <a href="/feeds/unified-feed.html" class="dashboard-item" id="unified-feed">Unified Feed</a>
+      </li>
+      <li>
+        <a href="/feeds/postAndSchedule.html" class="dashboard-item">Post & Schedule</a>
+      </li>
+      <li>
+        <a href="/feeds/analytics.html" class="dashboard-item">Quick Stats + Analytics</a>
+      </li>
+      <li>
+        <a href="/feeds/commentManager.html" class="dashboard-item">Comments Manager</a>
+      </li>
+    </ul>
+  </nav>
+
+
+
+  <div class="inbox-wrap">
+    <aside class="sidebar">
+      <div class="logo1">Inbox • Comments</div>
+      <div class="filters">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="unread">Unread</button>
+        <button class="filter-btn" data-filter="replied">Replied</button>
+      </div>
+      <div class="platforms">
+        <div style="margin-top:12px;color:var(--muted);font-size:13px">Platforms</div>
+        <div class="platform-item"><span class="platform-dot" style="background:#E1306C"></span> Instagram</div>
+        <div class="platform-item"><span class="platform-dot" style="background:#0A66C2"></span> LinkedIn</div>
+        <div class="platform-item"><span class="platform-dot" style="background:#1DA1F2"></span> Facebook</div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <div class="search">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M21 21l-4.35-4.35" stroke="rgba(255,255,255,0.6)" stroke-width="1.5" stroke-linecap="round"
+              stroke-linejoin="round" />
+            <circle cx="11" cy="11" r="6" stroke="rgba(255,255,255,0.6)" stroke-width="1.5" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+          <input id="searchInput" placeholder="Search by username or keyword..." />
+        </div>
+        <div class="tabs">
+          <button class="tab active" data-tab="all">All</button>
+          <button class="tab" data-tab="unread">Unread</button>
+          <button class="tab" data-tab="replied">Replied</button>
+        </div>
+      </div>
+
+      <div id="list" class="list">
+        <!-- messages injected here -->
+      </div>
+    </main>
+  </div>
+
+
+  <script type="module">
+    // --- Firebase Setup ---
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      getDocs,
+      setDoc,
+      doc,
+      deleteDoc,
+      query,
+      orderBy,
+      onSnapshot,
+      updateDoc,
+      arrayUnion,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+    // 🔹 Firebase Config
+    const firebaseConfig = {
+      apiKey: "AIzaSyD9ebL8xEeGjHOHxBsUtRY1IL65qm30zD4",
+      authDomain: "social-f6c78.firebaseapp.com",
+      projectId: "social-f6c78",
+      storageBucket: "social-f6c78.appspot.com",
+      messagingSenderId: "959340204769",
+      appId: "1:959340204769:web:0e049a80321ea701a15da0",
+      measurementId: "G-GCWJMNGPGN"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    // ---------- User Auth ----------
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        document.getElementById("user-name").textContent = user.displayName || "Anonymous";
+        document.getElementById("user-email").textContent = user.email || "";
+        document.getElementById("user-pic").src = user.photoURL || "https://cdn-icons-png.flaticon.com/512/847/847969.png";
+      } else {
+        document.getElementById("user-name").textContent = "Guest User";
+        document.getElementById("user-email").textContent = "Not Logged In";
+      }
+    });
+
+    const userPic = document.getElementById("user-pic");
+    const menu = document.getElementById("profile-menu");
+
+    userPic.addEventListener("click", () => {
+      menu.style.display = menu.style.display === "block" ? "none" : "block";
+    });
+
+    document.getElementById("logout-btn").addEventListener("click", () => {
+      signOut(auth)
+        .then(() => {
+          alert("Logged out!");
+          window.location.href = "../index.html";
+        })
+        .catch((err) => console.error("Logout error:", err));
+    });
+
+    // ---------- Comments Manager ----------
+    const commentsRef = collection(db, "comments");
+    const listEl = document.getElementById("list");
+    const searchInput = document.getElementById("searchInput");
+
+    let allMessages = [];
+    const unreadSet = new Set();
+    const repliedSet = new Set();
+    let searchTerm = "";
+    let activeFilter = "all";
+
+    function timeAgo(ts) {
+      if (!ts) return "";
+      let date;
+      if (ts.seconds) date = new Date(ts.seconds * 1000);
+      else if (ts.toDate) date = ts.toDate();
+      else date = new Date(ts);
+      const diff = (Date.now() - date.getTime()) / 1000;
+      if (diff < 60) return Math.floor(diff) + "s ago";
+      if (diff < 3600) return Math.floor(diff / 60) + "m ago";
+      if (diff < 86400) return Math.floor(diff / 3600) + "h ago";
+      return date.toLocaleString();
+    }
+
+    function escapeHtml(str) {
+      if (!str) return "";
+      return String(str).replace(/[&<>"']/g, (m) => (
+        { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]
+      ));
+    }
+
+    function sortByTimestamp(messages) {
+      return messages.sort((a, b) => {
+        const t1 = a.createdAt?.seconds || 0;
+        const t2 = b.createdAt?.seconds || 0;
+        return t2 - t1;
+      });
+    }
+
+    async function clearOldComments() {
+      const snapshot = await getDocs(commentsRef);
+      for (const docSnap of snapshot.docs) {
+        await deleteDoc(doc(db, "comments", docSnap.id));
+      }
+      console.log("🧹 Old comments cleared");
+    }
+
+    async function syncPostsWithComments() {
+      await clearOldComments();
+      const platforms = ["instagram", "facebook", "linkedin"];
+      for (const platform of platforms) {
+        const colRef = collection(db, platform);
+        const snapshot = await getDocs(colRef);
+        for (const docSnap of snapshot.docs) {
+          const data = docSnap.data();
+          if (Array.isArray(data.comments) && data.comments.length > 0) {
+            const ref = doc(db, "comments", docSnap.id);
+            await setDoc(ref, {
+              ...data,
+              platform,
+              syncedAt: serverTimestamp(),
+              read: data.read === true,
+              replied: data.replied === true
+            }, { merge: true });
+          }
+        }
+      }
+      console.log("✅ Synced posts with comments");
+    }
+
+    await syncPostsWithComments();
+
+    function setActiveFilter(filter) {
+      const f = (filter || "all").toLowerCase();
+      activeFilter = ["all", "unread", "replied"].includes(f) ? f : "all";
+      document.querySelectorAll(".filter-btn, .tab").forEach(b => {
+        const val = b.dataset.filter || b.dataset.tab;
+        b.classList.toggle("active", val?.toLowerCase() === activeFilter);
+      });
+      render();
+    }
+
+    document.querySelectorAll(".filter-btn, .tab").forEach(b => {
+      b.addEventListener("click", (e) => {
+        const f = e.currentTarget.dataset.filter || e.currentTarget.dataset.tab;
+        setActiveFilter(f);
+      });
+    });
+
+    function render() {
+      let filtered = [...allMessages];
+      if (searchTerm.trim()) {
+        filtered = filtered.filter(m =>
+          (m.username && m.username.toLowerCase().includes(searchTerm)) ||
+          (m.caption && m.caption.toLowerCase().includes(searchTerm))
+        );
+      }
+      if (activeFilter === "unread") filtered = filtered.filter(m => unreadSet.has(m._id));
+      if (activeFilter === "replied") filtered = filtered.filter(m => repliedSet.has(m._id));
+      filtered = sortByTimestamp(filtered);
+
+      listEl.innerHTML = filtered.length
+        ? ""
+        : '<p style="color:white;text-align:center;">No comments found</p>';
+
+      filtered.forEach(msg => {
+        const item = document.createElement("div");
+        item.className = "msg";
+
+        const avatar = document.createElement("img");
+        avatar.src = msg.userAvatar || "https://ui-avatars.com/api/?name=User";
+        avatar.className = "avatar";
+
+        const body = document.createElement("div");
+        body.className = "msg-body";
+
+        const meta = document.createElement("div");
+        meta.className = "meta";
+        meta.innerHTML = `
+          <div class="username">${escapeHtml(msg.userDisplayName || msg.username || "Unknown")}</div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <div class="time">${timeAgo(msg.createdAt)}</div>
+            <div class="platform">${escapeHtml(msg.platform || "")}</div>
+          </div>
+        `;
+
+        const caption = document.createElement("div");
+        caption.className = "text";
+        caption.textContent = msg.caption || "";
+
+        const commentsDiv = document.createElement("div");
+        commentsDiv.className = "replies";
+        if (Array.isArray(msg.comments) && msg.comments.length > 0) {
+          msg.comments.forEach(c => {
+            const cEl = document.createElement("div");
+            cEl.className = "reply";
+            const user = c.user || msg.username || "Anonymous";
+            const text = c.text || "";
+            cEl.innerHTML = `<strong>${escapeHtml(user)}:</strong> ${escapeHtml(text)}`;
+            commentsDiv.appendChild(cEl);
+          });
+        } else {
+          commentsDiv.innerHTML = `<p class="no-comments">No comments yet</p>`;
+        }
+
+        const replyArea = document.createElement("div");
+        replyArea.className = "reply-area";
+        const inp = document.createElement("input");
+        inp.placeholder = "Add a comment...";
+        const sendBtn = document.createElement("button");
+        sendBtn.textContent = "Send";
+        sendBtn.className = "btn primary";
+
+        const markBtn = document.createElement("button");
+        markBtn.className = "btn ghost";
+        markBtn.textContent = unreadSet.has(msg._id) ? "Mark Read" : "Mark Unread";
+
+        // ✅ Reply button logic
+        sendBtn.addEventListener("click", async (ev) => {
+          ev.stopPropagation();
+          const txt = inp.value.trim();
+          if (!txt) return;
+
+          const ref = doc(db, "comments", msg._id);
+          const newComment = { user: "You", text: txt, time: new Date().toISOString() };
+          try {
+            await updateDoc(ref, {
+              comments: arrayUnion(newComment),
+              updatedAt: serverTimestamp(),
+              replied: true,
+              read: true
+            });
+            if (!Array.isArray(msg.comments)) msg.comments = [];
+            msg.comments.push(newComment);
+            repliedSet.add(msg._id);
+            unreadSet.delete(msg._id);
+            inp.value = "";
+            render();
+          } catch (err) {
+            console.error("Error updating comments:", err);
+          }
+        });
+
+        markBtn.addEventListener("click", async (ev) => {
+          ev.stopPropagation();
+          const ref = doc(db, "comments", msg._id);
+          const isUnread = unreadSet.has(msg._id);
+          try {
+            await updateDoc(ref, { read: !isUnread });
+            if (isUnread) unreadSet.delete(msg._id);
+            else unreadSet.add(msg._id);
+            render();
+          } catch (err) {
+            console.error("Error toggling read:", err);
+          }
+        });
+
+        replyArea.append(inp, sendBtn, markBtn);
+        body.append(meta, caption, commentsDiv, replyArea);
+        item.append(avatar, body);
+        listEl.append(item);
+      });
+    }
+
+    const q = query(commentsRef, orderBy("createdAt", "desc"));
+    onSnapshot(q, (snapshot) => {
+      const temp = [];
+      unreadSet.clear();
+      repliedSet.clear();
+
+      snapshot.forEach(docSnap => {
+        const data = docSnap.data();
+        const id = docSnap.id;
+        temp.push({
+          _id: id,
+          caption: data.caption || "",
+          comments: data.comments || [],
+          createdAt: data.createdAt || null,
+          platform: data.platform || "",
+          userAvatar: data.userAvatar || "",
+          userDisplayName: data.userDisplayName || "",
+          username: data.username || "",
+          read: data.read === true,
+          replied: data.replied === true
+        });
+
+        if (!data.read) unreadSet.add(id);
+        if (data.replied) repliedSet.add(id);
+      });
+
+      allMessages = temp;
+      render();
+    });
+
+    searchInput.addEventListener("input", (e) => {
+      searchTerm = e.target.value.toLowerCase();
+      render();
+    });
+
+    setActiveFilter(activeFilter);
+  </script>
+
+</body>
+
+</html>

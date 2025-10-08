@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    html {
+      background-color: #0b0f19;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Lemonada", cursive;
+      overflow-x: hidden;
+    }
+
+    .hero-section {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      font-size: 29px;
+      font-weight: 800;
+      background: linear-gradient(90deg, #00d4ff, #ff6a00, #ff1493);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 2px;
+      position: absolute;
+      top: 15px;
+      left: 30px;
+      opacity: 1;
+      transform: scale(1);
+
+    }
+
+    .aura {
+      position: absolute;
+      top: -120px;
+      left: -90px;
+      width: 500px;
+      height: 300px;
+      background: radial-gradient(circle at center,
+          rgba(255, 200, 0, 0.4),
+          rgba(0, 56, 113, 0.35),
+          rgba(80, 0, 43, 0.25),
+          transparent 75%);
+      border-radius: 50%;
+      filter: blur(80px);
+      animation: auraPop 2.5s ease-out forwards;
+      z-index: -1;
+    }
+
+    @keyframes auraPop {
+      0% {
+        transform: scale(0.6);
+        opacity: 0;
+      }
+
+      60% {
+        transform: scale(1.1);
+        opacity: 1;
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: 0.85;
+      }
+    }
+
+    .logo {
+      width: 40px;
+      height: 40px;
+      margin: 0 6px;
+      animation: spin 16s linear infinite;
+    }
+
+    @keyframes spin {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Navbar */
+    .navbar {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: sans-serif;
+    }
+
+    .navbar ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      gap: 80px;
+    }
+
+    .navbar a {
+      text-decoration: none;
+      color: #f0f0f0;
+      font-size: 20px;
+      font-weight: 700;
+      transition: color 0.3s ease;
+    }
+
+    .navbar a:hover {
+      color: #ff6a00;
+    }
+
+    /* 🔹 User profile top-right */
+    #user-info {
+      position: absolute;
+      top: 20px;
+      right: 25px;
+      font-family: Arial, sans-serif;
+      /* ✅ simple font */
+    }
+
+    #user-pic {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid #ff6a00;
+      /* subtle highlight */
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    #user-pic:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 8px rgba(255, 106, 0, 0.6);
+    }
+
+    /* 🔹 Dropdown menu */
+    #profile-menu {
+      position: absolute;
+      top: 60px;
+      right: 20px;
+      background: #11141b;
+      color: #f1f1f1;
+      border-radius: 12px;
+      padding: 15px;
+      width: 230px;
+      display: none;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+      font-family: Arial, sans-serif;
+      animation: fadeSlide 0.25s ease forwards;
+      z-index: 2000;
+    }
+
+    @keyframes fadeSlide {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    #profile-menu p {
+      margin: 6px 0;
+      font-size: 14px;
+      color: #ddd;
+    }
+
+    #profile-menu p strong {
+      font-size: 16px;
+      color: #fff;
+    }
+
+    #profile-menu hr {
+      border: 0;
+      border-top: 1px solid #333;
+      margin: 10px 0;
+    }
+
+    #profile-menu .menu-btn {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border: none;
+      border-radius: 6px;
+      background: #2a2f3a;
+      color: #f0f0f0;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      text-align: left;
+      transition: background 0.2s ease;
+    }
+
+    #profile-menu .menu-btn:hover {
+      background: #ff6a00;
+      color: white;
+    }
+
+    #profile-menu .logout-btn {
+      background: #ff6a00;
+      color: white;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    #profile-menu .logout-btn:hover {
+      background: #ff4500;
+    }
+
+
+
+
+
+
+    input.hamburger {
+      display: none;
+    }
+
+    label.hamburger {
+      z-index: 1001;
+      position: fixed;
+      top: 18px;
+      left: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 28px;
+      width: 34px;
+      cursor: pointer;
+    }
+
+    label.hamburger>i,
+    label.hamburger>i::before,
+    label.hamburger>i::after {
+      background: white;
+      border-radius: 2px;
+      content: "";
+      display: block;
+      width: 100%;
+      height: 3px;
+      position: absolute;
+      transition: all 0.3s ease;
+    }
+
+    label.hamburger>i::before {
+      transform: translateY(-8px);
+    }
+
+    label.hamburger>i::after {
+      transform: translateY(8px);
+    }
+
+    input.hamburger:checked+label.hamburger>i {
+      background: transparent;
+    }
+
+    input.hamburger:checked+label.hamburger>i::before {
+      transform: rotate(45deg);
+    }
+
+    input.hamburger:checked+label.hamburger>i::after {
+      transform: rotate(-45deg);
+    }
+
+    /* 🔹 Sidebar (glass style) */
+    .primnav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 300px;
+      padding-top: 70px;
+      background: rgba(13, 24, 48, 0.5);
+      /* navy glass look */
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-right: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 2px 0 15px rgba(0, 0, 0, 0.3);
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+      z-index: 1000;
+      display: flex;
+      /* 👈 add */
+      flex-direction: column;
+      /* 👈 add */
+      justify-content: space-between;
+      /* 👈 pushes last item to bottom */
+    }
+
+    input.hamburger:checked~nav.primnav {
+      transform: translateX(0);
+    }
+
+    /* 🔹 Navigation items */
+    .primnav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      flex-grow: 1;
+      width: 95%;
+    }
+
+    .primnav li {
+      margin: 10px 0;
+    }
+
+    .primnav li a {
+      display: flex;
+      align-items: center;
+      padding: 15px 20px;
+      color: white;
+      font-weight: 600;
+      font-size: 16px;
+      font-family: Arial, sans-serif;
+      text-decoration: none;
+      border-radius: 10px;
+      transition: background 0.3s ease, padding-left 0.3s ease, transform 0.2s ease;
+    }
+
+    .primnav li a:hover {
+      background: rgba(255, 255, 255, 0.15);
+      padding-left: 28px;
+      transform: translateX(5px);
+    }
+
+    /* Dashboard items styling */
+    .dashboard-item {
+      position: relative;
+      margin-left: 15px !important;
+      font-size: 16px !important;
+      font-weight: 500 !important;
+      border-left: 3px solid rgba(255, 106, 0, 0.3);
+      padding-left: 18px !important;
+      margin-bottom: 8px !important;
+    }
+
+    .dashboard-item:hover {
+      border-left-color: #ff6a00;
+      background: rgba(255, 106, 0, 0.1);
+      font-weight: 600 !important;
+    }
+
+    /* Main dashboard title */
+    #dashboard-main {
+      background: linear-gradient(135deg, rgba(255, 106, 0, 0.2), rgba(0, 212, 255, 0.2));
+      border: 1px solid rgba(255, 106, 0, 0.3);
+      margin-bottom: 20px !important;
+      font-weight: 700 !important;
+      font-size: 22px !important;
+      padding: 18px 20px !important;
+    }
+
+    #dashboard-main:hover {
+      background: linear-gradient(135deg, rgba(255, 106, 0, 0.3), rgba(0, 212, 255, 0.3));
+      border-color: #ff6a00;
+    }
+
+    /* 🔹 Submenu */
+    .secnav {
+      margin-left: 20px;
+      border-left: 1px solid rgba(255, 255, 255, 0.2);
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.4s ease;
+    }
+
+    input.hamburger:checked~nav.primnav .secnav {
+      max-height: 300px;
+    }
+
+    .secnav li a {
+      font-size: 14px;
+      padding: 10px 18px;
+      color: #cfd8dc;
+    }
+
+    .secnav li a:hover {
+      color: white;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Move dashboard to bottom-left */
+    .primnav {
+      top: auto !important;
+      bottom: 0 !important;
+      border-top-right-radius: 12px;
+    }
+
+    /* Keep hamburger button near bottom */
+    label.hamburger {
+      top: auto !important;
+      bottom: 20px !important;
+    }
+
+
+    .footer {
+      background: linear-gradient(#0e121f,
+          rgba(0, 102, 255, 0.05));
+      color: #fff;
+      /* White text */
+      padding: 60px 20px 20px;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+
+    .footer-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 40px;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+
+    .footer-brand h2 {
+      font-size: 28px;
+      font-weight: 800;
+      background: linear-gradient(90deg, #ff6a00, #ff1493);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .footer-brand span {
+      color: #ff1493;
+    }
+
+    .footer-brand p {
+      margin: 15px 0;
+      color: #ccc;
+      line-height: 1.5;
+    }
+
+    .footer-socials a img {
+      width: 28px;
+      margin-right: 12px;
+      transition: transform 0.3s ease;
+    }
+
+    .footer-socials a img:hover {
+      transform: scale(1.2);
+    }
+
+    .footer-nav h3,
+    .footer-contact h3,
+    .footer-newsletter h3 {
+      font-size: 20px;
+      margin-bottom: 15px;
+      background: linear-gradient(90deg, #ff6a00, #ff1493);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .footer-nav ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .footer-nav ul li {
+      margin-bottom: 10px;
+    }
+
+    .footer-nav ul li a {
+      text-decoration: none;
+      color: #ccc;
+      transition: color 0.3s ease;
+    }
+
+    .footer-nav ul li a:hover {
+      color: #ff6a00;
+    }
+
+    .footer-contact p {
+      margin: 8px 0;
+      color: #ccc;
+    }
+
+    .footer-newsletter p {
+      margin-bottom: 12px;
+      color: #ccc;
+    }
+
+    .footer-newsletter form {
+      display: flex;
+      gap: 10px;
+    }
+
+    .footer-newsletter input {
+      flex: 1;
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      outline: none;
+    }
+
+    .footer-newsletter button {
+      background: linear-gradient(90deg, #ff6a00, #ff1493);
+      color: #fff;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .footer-newsletter button:hover {
+      transform: scale(1.05);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid #222;
+      margin-top: 40px;
+      padding-top: 15px;
+      text-align: center;
+      font-size: 14px;
+      color: #aaa;
+    }
+
+    .footer-bottom a {
+      color: #ff6a00;
+      text-decoration: none;
+      margin: 0 8px;
+    }
+
+    .footer-bottom a:hover {
+      text-decoration: underline;
+    }
+
+    section {
+      padding: 70px 40px;
+      text-align: center;
+    }
+
+    /* ---------- TOP SECTION ---------- */
+    .top-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 60px;
+      margin-top: -900px;
+
+    }
+
+    .intro-text {
+      max-width: 700px;
+      text-align: left;
+      margin-top: -100px;
+
+    }
+
+    .intro-text h1 {
+      font-size: 2.9rem;
+      background: linear-gradient(90deg, #ff6a00, #ff1493);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 700;
+      margin-bottom: 20px;
+      margin-right: -50px;
+      margin-left: 100px;
+
+    }
+
+    .intro-text p {
+      font-size: 1.3rem;
+      line-height: 1.9;
+      color: #cbd5e1;
+      margin-left: 100px;
+    }
+
+    .top-image {
+      max-width: 400px;
+    }
+
+    .top-image img {
+      width: 120%;
+      height: 160%;
+      border-radius: 12px;
+    }
+
+    .top-image img:hover {
+      transform: scale(1.05);
+    }
+
+    /* ---------- PRICING SECTION ---------- */
+    h2 {
+      font-size: 2.2rem;
+      background: linear-gradient(90deg, #00f2ff, #00c3ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 40px;
+      font-weight: 700;
+
+    }
+
+    .card-row {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 80px;
+      perspective: 1000px;
+    }
+
+    .wrapper {
+      position: relative;
+      perspective: 40em;
+      display: grid;
+      transform-style: preserve-3d;
+      transition: all 0.4s ease;
+    }
+
+    .wrapper:before {
+      --bw: 9px;
+      content: '';
+      grid-area: 1 / 1;
+      background: transparent;
+      transform: translateX(-60px) rotateY(-30deg) rotateX(15deg) scale(1.03);
+      pointer-events: none;
+      border: var(--bw) solid rgba(0, 242, 255, 0.3);
+      border-radius: 12px;
+      transition: .4s transform cubic-bezier(.25, .46, .45, 1);
+    }
+
+    .wrapper:hover:before {
+      transform: none;
+      border-color: rgba(0, 242, 255, 1);
+      box-shadow: 0 0 25px rgba(0, 242, 255, 0.6);
+    }
+
+    .card {
+      grid-area: 1 / 1;
+      width: 320px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 25px 20px;
+      color: #fff;
+      font-size: 16px;
+      box-shadow: 0 10px 30px -3px rgba(0, 0, 0, .3);
+      transition: .4s all cubic-bezier(.25, .46, .45, 1);
+      backdrop-filter: blur(10px);
+    }
+
+    .wrapper:hover .card {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 20px 40px rgba(0, 242, 255, 0.3);
+    }
+
+    .card h3 {
+      font-size: 1.4rem;
+      margin-bottom: 10px;
+    }
+
+    .price {
+      font-size: 1.1rem;
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: #00f2ff;
+    }
+
+    .description {
+      font-size: 0.95rem;
+      margin-bottom: 15px;
+      color: #cbd5e1;
+    }
+
+    .features {
+      list-style: none;
+      margin-bottom: 20px;
+      padding-left: 0;
+      text-align: left;
+    }
+
+    .features li {
+      margin: 6px 0;
+      font-size: 0.9rem;
+    }
+
+    .features .disabled {
+      color: #9ca3af;
+      text-decoration: line-through;
+    }
+
+    .subscribe-btn {
+      background-color: #00f2ff;
+      color: #0b0f19;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      font-size: 1rem;
+      transition: 0.3s;
+    }
+
+    .subscribe-btn:hover {
+      background-color: #00c3ff;
+      box-shadow: 0 0 15px rgba(0, 242, 255, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .basic-plan {
+      border-left: 4px solid #10b981;
+    }
+
+    .pro-plan {
+      border-left: 4px solid #facc15;
+    }
+
+    .premium-plan {
+      border-left: 4px solid #3b82f6;
+    }
+
+    @media (max-width: 900px) {
+      .top-section {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .intro-text {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      .top-image {
+        max-width: 300px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- First Section -->
+  <div class="hero-section">
+    <div class="brand">
+      <div class="aura"></div>
+      Link
+      <svg class="logo" viewBox="0 0 200 200"></svg>
+      rbit
+    </div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <ul>
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="feature.html">Features</a></li>
+      <li><a href="#">Pricing/Plans</a></li>
+      <li><a href="/features/about.html">About</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </nav>
+
+
+
+  <!-- 🔹 User Info (Pic only) -->
+  <div id="user-info">
+    <img id="user-pic" src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="User">
+  </div>
+
+  <!-- 🔹 Profile Dropdown -->
+  <div id="profile-menu">
+    <p><strong id="user-name">User Name</strong></p>
+    <p id="user-email">user@email.com</p>
+    <hr>
+    <button class="menu-btn">⚙️ Settings</button>
+    <hr>
+    <button id="logout-btn" class="menu-btn logout-btn">🚪 Log Out</button>
+
+  </div>
+
+  <!-- Gradient Logo -->
+  <div class="brand">
+    <div class="aura"></div>
+    Link
+    <svg class="logo" viewBox="0 0 200 200">
+      <defs>
+        <linearGradient id="gradYellow" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#FFD700" />
+          <stop offset="100%" stop-color="#FFA500" />
+        </linearGradient>
+        <linearGradient id="gradPink" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#FF69B4" />
+          <stop offset="100%" stop-color="#FF1493" />
+        </linearGradient>
+        <linearGradient id="gradBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#00BFFF" />
+          <stop offset="100%" stop-color="#1E90FF" />
+        </linearGradient>
+        <linearGradient id="gradOrange" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#FF8C00" />
+          <stop offset="100%" stop-color="#FF4500" />
+        </linearGradient>
+      </defs>
+      <path d="M100 20 C140 40, 170 70, 180 100 C170 80, 140 50, 100 40 Z" fill="url(#gradYellow)" />
+      <path d="M180 100 C170 140, 140 170, 100 180 C120 170, 150 140, 160 100 Z" fill="url(#gradPink)" />
+      <path d="M100 180 C60 170, 30 140, 20 100 C40 120, 70 150, 100 160 Z" fill="url(#gradBlue)" />
+      <path d="M20 100 C40 60, 70 30, 100 20 C80 40, 50 70, 40 100 Z" fill="url(#gradOrange)" />
+    </svg> rbit
+  </div>
+
+
+
+
+  <!-- Hamburger Menu -->
+  <input id="hamburger" class="hamburger" type="checkbox" />
+  <label for="hamburger" class="hamburger">
+    <i></i>
+  </label>
+
+  <!-- Sidebar -->
+  <nav class="primnav">
+    <ul>
+      <li style="font-size: 22px; margin-bottom: 20px;"><a href="#dashboard" id="dashboard-main">Dashboard</a></li>
+      <li>
+        <a href="/features/feature.html" class="dashboard-item">Overview</a>
+      </li>
+      <li>
+        <a href="../feeds/unified-feed.html" class="dashboard-item" id="unified-feed">Unified Feed</a>
+      </li>
+      <li>
+        <a href="../feeds/postAndSchedule.html" class="dashboard-item">Post & Schedule</a>
+      </li>
+      <li>
+        <a href="../feeds/analytics.html" class="dashboard-item">Quick Stats + Analytics</a>
+      </li>
+      <li>
+        <a href="/feeds/commentManager.html" class="dashboard-item">Comments Manager</a>
+      </li>
+    </ul>
+  </nav>
+
+  <section>
+    <!-- Top Intro Section -->
+    <div class="top-section" style="font-family: Arial, Helvetica, sans-serif;">
+      <div class="intro-text">
+        <h1>Explore Our LinkOrbit Plans</h1>
+        <p>Pick a LinkOrbit plan that fits your goals — manage posts, track analytics, and collaborate effortlessly
+          across all platforms.</p>
+
+      </div>
+
+      <div class="top-image">
+        <img src="/asset/price.png" alt="Plans Image">
+      </div>
+    </div>
+
+
+    <div class="card-row" style="font-family: Arial, Helvetica, sans-serif;">
+
+      <!-- BASIC PLAN -->
+      <div class="wrapper">
+        <div class="card basic-plan">
+          <h3>🟢 Basic</h3>
+          <p class="price">Free</p>
+          <p class="description">Perfect for individual users managing one platform.</p>
+          <ul class="features">
+            <li>✔️ Unified Feed (1 Platform)</li>
+            <li>✔️ Post & Scheduler (Up to 5 posts)</li>
+            <li>✔️ Basic Analytics Overview</li>
+            <li>❌ No Real-Time Crisis Detector Bot</li>
+            <li>❌ Inbox & Comment Manager</li>
+
+          </ul>
+          <button class="subscribe-btn">Get Started</button>
+        </div>
+      </div>
+
+      <!-- PRO PLAN -->
+      <div class="wrapper">
+        <div class="card pro-plan">
+          <h3>🟡 Pro</h3>
+          <p class="price">₹499/month</p>
+          <p class="description">For professionals managing multiple social accounts.</p>
+          <ul class="features">
+            <li>✅ Unified Feed (All Platforms)</li>
+            <li>✅ Post & Scheduler (Up to 20 posts)</li>
+            <li>✅ Stats & Analytics Dashboard(limited)</li>
+            <li>❌ Inbox & Comment Manager</li>
+            <li>❌ No Real-Time Crisis Detector Bot</li>
+          </ul>
+          <button class="subscribe-btn">Upgrade to Pro</button>
+        </div>
+      </div>
+
+      <!-- ENTERPRISE PLAN -->
+      <div class="wrapper">
+        <div class="card premium-plan">
+          <h3>🔵 Enterprise</h3>
+          <p class="price">₹999/month</p>
+          <p class="description">Perfect for advanced users who need everything unlocked.</p>
+          <ul class="features">
+            <li>✅ Post & Scheduler (Unlimited)</li>
+            <li>✅ Real-Time Crisis Detector Bot</li>
+            <li>✅ Inbox & Comment Manager</li>
+            <li>✅ Stats & Analytics Dashboard</li>
+            <li>✅ 24/7 Premium Support</li>
+          </ul>
+          <button class="subscribe-btn">Go Enterprise</button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- Footer Section -->
+  <footer class="footer">
+    <div class="footer-container">
+
+      <!-- Brand Info -->
+      <div class="footer-brand">
+        <h2>Link<span>Orbit</span></h2>
+        <p>Your digital universe, orbiting in one place.<br>
+          Simplify your social media experience with us.</p>
+        <div class="footer-socials">
+          <a href="#"><img src="/asset/face.png" alt="Facebook"></a>
+          <a href="#"><img src="/asset/insta.png" alt="Instagram"></a>
+          <a href="#"><img src="/asset/you.png" alt="YouTube"></a>
+          <a href="#"><img src="/asset/l.png" alt="LinkedIn"></a>
+          <a href="#"><img src="/asset/pin.png" alt="Pinterest"></a>
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <div class="footer-nav">
+        <h3>Navigation</h3>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Features</a></li>
+          <li><a href="#">Pricing/Plans</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#faq">FAQs</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact -->
+      <div class="footer-contact">
+        <h3>Contact</h3>
+        <p>📞 +123 234 1234</p>
+        <p>📧 kadamsweta92@gmail.com</p>
+        <p>🌐 www.linkorbit.com</p>
+        <p>📍 Mumbai, India</p>
+      </div>
+
+      <!-- Newsletter -->
+      <div class="footer-newsletter">
+        <h3>Stay Updated</h3>
+        <p>Subscribe to get the latest insights and updates.</p>
+        <form>
+          <input type="email" placeholder="Enter your email" required>
+          <button type="submit">→</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Bottom -->
+    <div class="footer-bottom">
+      <p>© 2024 LinkOrbit. All Rights Reserved.</p>
+      <p><a href="#">Terms & Conditions</a> | <a href="#">Privacy Policy</a></p>
+    </div>
+  </footer>
+
+
+
+
+
+
+  <script type="module">
+    // --- Firebase Setup ---
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD9ebL8xEeGjHOHxBsUtRY1IL65qm30zD4",
+      authDomain: "social-f6c78.firebaseapp.com",
+      projectId: "social-f6c78",
+      storageBucket: "social-f6c78.appspot.com",
+
+      messagingSenderId: "959340204769",
+      appId: "1:959340204769:web:0e049a80321ea701a15da0",
+      measurementId: "G-GCWJMNGPGN"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+
+    // 🔹 Check if user is logged in
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        document.getElementById("user-name").textContent = user.displayName || "Anonymous";
+        document.getElementById("user-email").textContent = user.email || "";
+        document.getElementById("user-pic").src = user.photoURL || "https://cdn-icons-png.flaticon.com/512/847/847969.png";
+      } else {
+        document.getElementById("user-name").textContent = "Guest User";
+        document.getElementById("user-email").textContent = "Not Logged In";
+      }
+    });
+
+    // 🔹 Profile dropdown toggle
+    const userPic = document.getElementById("user-pic");
+    const menu = document.getElementById("profile-menu");
+
+    userPic.addEventListener("click", () => {
+      menu.style.display = menu.style.display === "block" ? "none" : "block";
+    });
+
+    // 🔹 Logout
+    document.getElementById("logout-btn").addEventListener("click", () => {
+      signOut(auth).then(() => {
+        alert("Logged out!");
+        window.location.href = "../index.html"; // redirect to homepage
+      }).catch((err) => console.error("Logout error:", err));
+    });
+  </script>
+</body>
+
+</html>

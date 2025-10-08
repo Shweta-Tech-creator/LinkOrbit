@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Social Aggregator Analytics</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    html {
+      background-color: #0b0f19;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Lemonada", cursive;
+      overflow-x: hidden;
+    }
+
+    .hero-section {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      font-size: 29px;
+      font-weight: 800;
+      background: linear-gradient(90deg, #00d4ff, #ff6a00, #ff1493);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 2px;
+      position: absolute;
+      top: 15px;
+      left: 30px;
+      opacity: 1;
+      transform: scale(1);
+
+    }
+
+    .aura {
+      position: absolute;
+      top: -120px;
+      left: -90px;
+      width: 500px;
+      height: 300px;
+      background: radial-gradient(circle at center,
+          rgba(255, 200, 0, 0.4),
+          rgba(0, 56, 113, 0.35),
+          rgba(80, 0, 43, 0.25),
+          transparent 75%);
+      border-radius: 50%;
+      filter: blur(80px);
+      animation: auraPop 2.5s ease-out forwards;
+      z-index: -1;
+    }
+
+    @keyframes auraPop {
+      0% {
+        transform: scale(0.6);
+        opacity: 0;
+      }
+
+      60% {
+        transform: scale(1.1);
+        opacity: 1;
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: 0.85;
+      }
+    }
+
+    .logo {
+      width: 40px;
+      height: 40px;
+      margin: 0 6px;
+      animation: spin 16s linear infinite;
+    }
+
+    @keyframes spin {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Navbar */
+    .navbar {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: sans-serif;
+    }
+
+    .navbar ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      gap: 80px;
+    }
+
+    .navbar a {
+      text-decoration: none;
+      color: #f0f0f0;
+      font-size: 20px;
+      font-weight: 700;
+      transition: color 0.3s ease;
+    }
+
+    .navbar a:hover {
+      color: #ff6a00;
+    }
+
+    /* 🔹 User profile top-right */
+    #user-info {
+      position: absolute;
+      top: 20px;
+      right: 25px;
+      font-family: Arial, sans-serif;
+      /* ✅ simple font */
+    }
+
+    #user-pic {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid #ff6a00;
+      /* subtle highlight */
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    #user-pic:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 8px rgba(255, 106, 0, 0.6);
+    }
+
+    /* 🔹 Dropdown menu */
+    #profile-menu {
+      position: absolute;
+      top: 60px;
+      right: 20px;
+      background: #11141b;
+      color: #f1f1f1;
+      border-radius: 12px;
+      padding: 15px;
+      width: 230px;
+      display: none;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+      font-family: Arial, sans-serif;
+      animation: fadeSlide 0.25s ease forwards;
+    }
+
+    @keyframes fadeSlide {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    #profile-menu p {
+      margin: 6px 0;
+      font-size: 14px;
+      color: #ddd;
+    }
+
+    #profile-menu p strong {
+      font-size: 16px;
+      color: #fff;
+    }
+
+    #profile-menu hr {
+      border: 0;
+      border-top: 1px solid #333;
+      margin: 10px 0;
+    }
+
+    #profile-menu .menu-btn {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border: none;
+      border-radius: 6px;
+      background: #2a2f3a;
+      color: #f0f0f0;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      text-align: left;
+      transition: background 0.2s ease;
+    }
+
+    #profile-menu .menu-btn:hover {
+      background: #ff6a00;
+      color: white;
+    }
+
+    #profile-menu .logout-btn {
+      background: #ff6a00;
+      color: white;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    #profile-menu .logout-btn:hover {
+      background: #ff4500;
+    }
+
+    input.hamburger {
+      display: none;
+    }
+
+    label.hamburger {
+      z-index: 1001;
+      position: fixed;
+      top: 18px;
+      left: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 28px;
+      width: 34px;
+      cursor: pointer;
+    }
+
+    label.hamburger>i,
+    label.hamburger>i::before,
+    label.hamburger>i::after {
+      background: white;
+      border-radius: 2px;
+      content: "";
+      display: block;
+      width: 100%;
+      height: 3px;
+      position: absolute;
+      transition: all 0.3s ease;
+    }
+
+    label.hamburger>i::before {
+      transform: translateY(-8px);
+    }
+
+    label.hamburger>i::after {
+      transform: translateY(8px);
+    }
+
+    input.hamburger:checked+label.hamburger>i {
+      background: transparent;
+    }
+
+    input.hamburger:checked+label.hamburger>i::before {
+      transform: rotate(45deg);
+    }
+
+    input.hamburger:checked+label.hamburger>i::after {
+      transform: rotate(-45deg);
+    }
+
+    /* 🔹 Sidebar (glass style) */
+    .primnav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 300px;
+      padding-top: 70px;
+      background: rgba(13, 24, 48, 0.5);
+      /* navy glass look */
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-right: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 2px 0 15px rgba(0, 0, 0, 0.3);
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+      z-index: 1000;
+      display: flex;
+      /* 👈 add */
+      flex-direction: column;
+      /* 👈 add */
+      justify-content: space-between;
+      /* 👈 pushes last item to bottom */
+    }
+
+    input.hamburger:checked~nav.primnav {
+      transform: translateX(0);
+    }
+
+    /* 🔹 Navigation items */
+    .primnav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      flex-grow: 1;
+      width: 95%;
+    }
+
+    .primnav li {
+      margin: 10px 0;
+    }
+
+    .primnav li a {
+      display: flex;
+      align-items: center;
+      padding: 15px 20px;
+      color: white;
+      font-weight: 600;
+      font-size: 16px;
+      font-family: Arial, sans-serif;
+      text-decoration: none;
+      border-radius: 10px;
+      transition: background 0.3s ease, padding-left 0.3s ease, transform 0.2s ease;
+    }
+
+    .primnav li a:hover {
+      background: rgba(255, 255, 255, 0.15);
+      padding-left: 28px;
+      transform: translateX(5px);
+    }
+
+    /* Dashboard items styling */
+    .dashboard-item {
+      position: relative;
+      margin-left: 15px !important;
+      font-size: 16px !important;
+      font-weight: 500 !important;
+      border-left: 3px solid rgba(255, 106, 0, 0.3);
+      padding-left: 18px !important;
+      margin-bottom: 8px !important;
+    }
+
+    .dashboard-item:hover {
+      border-left-color: #ff6a00;
+      background: rgba(255, 106, 0, 0.1);
+      font-weight: 600 !important;
+    }
+
+    /* Main dashboard title */
+    #dashboard-main {
+      background: linear-gradient(135deg, rgba(255, 106, 0, 0.2), rgba(0, 212, 255, 0.2));
+      border: 1px solid rgba(255, 106, 0, 0.3);
+      margin-bottom: 20px !important;
+      font-weight: 700 !important;
+      font-size: 22px !important;
+      padding: 18px 20px !important;
+    }
+
+    #dashboard-main:hover {
+      background: linear-gradient(135deg, rgba(255, 106, 0, 0.3), rgba(0, 212, 255, 0.3));
+      border-color: #ff6a00;
+    }
+
+    /* 🔹 Submenu */
+    .secnav {
+      margin-left: 20px;
+      border-left: 1px solid rgba(255, 255, 255, 0.2);
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.4s ease;
+    }
+
+    input.hamburger:checked~nav.primnav .secnav {
+      max-height: 300px;
+    }
+
+    .secnav li a {
+      font-size: 14px;
+      padding: 10px 18px;
+      color: #cfd8dc;
+    }
+
+    .secnav li a:hover {
+      color: white;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Move dashboard to bottom-left */
+    .primnav {
+      top: auto !important;
+      bottom: 0 !important;
+      border-top-right-radius: 12px;
+    }
+
+    /* Keep hamburger button near bottom */
+    label.hamburger {
+      top: auto !important;
+      bottom: 20px !important;
+    }
+
+
+    .dashboard {
+      font-family: 'Poppins', sans-serif;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+      gap: 25px;
+      padding: 40px;
+      margin-top: -20px;
+      margin-right: -30px;
+    }
+
+    .card {
+      background: #101a33;
+      /* deep navy card */
+      border-radius: 14px;
+      padding: 25px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+      transition: all 0.3s ease;
+      border-top: 4px solid #3c5aa6;
+      /* navy accent */
+      color: #e4e9f0;
+      /* light text for dark bg */
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.6);
+    }
+
+    .card h2 {
+      margin-bottom: 18px;
+      font-size: 1.25em;
+      color: #9dbdff;
+      /* soft blue heading */
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+      padding-bottom: 6px;
+    }
+
+    canvas {
+      width: 100% !important;
+      height: 320px !important;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 25px auto;
+      max-width: 1200px;
+    }
+
+    .stat {
+      background: linear-gradient(135deg, #1e2a57, #283b70);
+      color: #f1f6ff;
+      padding: 18px 30px;
+      border-radius: 12px;
+      font-weight: 600;
+      text-align: center;
+      min-width: 140px;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .stat:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    }
+
+    .best-posts {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .best-post {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 12px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    .best-post:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: scale(1.02);
+    }
+
+    .best-post img {
+      width: 70px;
+      height: 70px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .best-post .info {
+      flex: 1;
+      color: #dce3f1;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- First Section -->
+  <div class="hero-section">
+    <div class="brand">
+      <div class="aura"></div>
+      Link
+      <svg class="logo" viewBox="0 0 200 200"></svg>
+      rbit
+    </div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <ul>
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="feature.html">Features</a></li>
+      <li><a href="/features/pricing.html">Pricing/Plans</a></li>
+      <li><a href="/features/about.html">About</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- 🔹 User Info (Pic only) -->
+  <div id="user-info">
+    <img id="user-pic" src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="User">
+  </div>
+
+  <!-- 🔹 Profile Dropdown -->
+  <div id="profile-menu">
+    <p><strong id="user-name">User Name</strong></p>
+    <p id="user-email">user@email.com</p>
+    <hr>
+    <button id="logout-btn" class="menu-btn logout-btn">🚪 Log Out</button>
+
+  </div>
+
+
+
+  <div class="brand">
+    <div class="aura"></div>
+    Link
+    <svg class="logo" viewBox="0 0 200 200">
+      <defs>
+        <linearGradient id="gradYellow" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#FFD700" />
+          <stop offset="100%" stop-color="#FFA500" />
+        </linearGradient>
+        <linearGradient id="gradPink" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#FF69B4" />
+          <stop offset="100%" stop-color="#FF1493" />
+        </linearGradient>
+        <linearGradient id="gradBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#00BFFF" />
+          <stop offset="100%" stop-color="#1E90FF" />
+        </linearGradient>
+        <linearGradient id="gradOrange" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#FF8C00" />
+          <stop offset="100%" stop-color="#FF4500" />
+        </linearGradient>
+      </defs>
+      <path d="M100 20 C140 40, 170 70, 180 100 C170 80, 140 50, 100 40 Z" fill="url(#gradYellow)" />
+      <path d="M180 100 C170 140, 140 170, 100 180 C120 170, 150 140, 160 100 Z" fill="url(#gradPink)" />
+      <path d="M100 180 C60 170, 30 140, 20 100 C40 120, 70 150, 100 160 Z" fill="url(#gradBlue)" />
+      <path d="M20 100 C40 60, 70 30, 100 20 C80 40, 50 70, 40 100 Z" fill="url(#gradOrange)" />
+    </svg> rbit
+  </div>
+
+
+
+  <!-- Hamburger Menu -->
+  <input id="hamburger" class="hamburger" type="checkbox" />
+  <label for="hamburger" class="hamburger">
+    <i></i>
+  </label>
+
+
+
+  <!-- Sidebar -->
+  <nav class="primnav">
+    <ul>
+      <li style="font-size: 22px; margin-bottom: 20px;"><a href="#dashboard" id="dashboard-main">Dashboard</a></li>
+      <li>
+        <a href="/features/feature.html" class="dashboard-item">Overview </a>
+      </li>
+      <li>
+        <a href="/feeds/unified-feed.html" class="dashboard-item" id="unified-feed">Unified Feed</a>
+      </li>
+      <li>
+        <a href="/feeds/postAndSchedule.html" class="dashboard-item">Post & Schedule</a>
+      </li>
+      <li>
+        <a href="/feeds/analytics.html" class="dashboard-item">Quick Stats + Analytics</a>
+      </li>
+      <li>
+        <a href="/feeds/commentManager.html" class="dashboard-item">Comments Manager</a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="stats" id="statsSummary" style="margin-top: -900px;   font-family: 'Poppins', sans-serif;">
+    <!-- Stats Summary will be injected here -->
+  </div>
+
+  <div class="dashboard">
+    <div class="card">
+      <h2>Posts per Network</h2>
+      <canvas id="postsPerNetwork"></canvas>
+    </div>
+
+    <div class="card">
+      <h2>Scheduled vs Published</h2>
+      <canvas id="scheduledVsPublished"></canvas>
+    </div>
+
+    <div class="card">
+      <h2>Engagement Trend</h2>
+      <canvas id="engagementTrend"></canvas>
+    </div>
+
+    <div class="card">
+      <h2>Top Hashtags</h2>
+      <canvas id="topHashtags"></canvas>
+    </div>
+
+
+    <div class="card">
+      <h2> Best Performing Posts</h2>
+      <div class="best-posts" id="bestPosts"></div>
+    </div>
+
+    <div class="card">
+      <h2>Posting Time Analysis</h2>
+      <canvas id="postingTimeAnalysis"></canvas>
+    </div>
+  </div>
+
+
+
+  <script type="module">
+    // --- Firebase Setup ---
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD9ebL8xEeGjHOHxBsUtRY1IL65qm30zD4",
+      authDomain: "social-f6c78.firebaseapp.com",
+      projectId: "social-f6c78",
+      storageBucket: "social-f6c78.appspot.com",
+
+      messagingSenderId: "959340204769",
+      appId: "1:959340204769:web:0e049a80321ea701a15da0",
+      measurementId: "G-GCWJMNGPGN"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+
+    // 🔹 Check if user is logged in
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        document.getElementById("user-name").textContent = user.displayName || "Anonymous";
+        document.getElementById("user-email").textContent = user.email || "";
+        document.getElementById("user-pic").src = user.photoURL || "https://cdn-icons-png.flaticon.com/512/847/847969.png";
+      } else {
+        document.getElementById("user-name").textContent = "Guest User";
+        document.getElementById("user-email").textContent = "Not Logged In";
+      }
+    });
+
+    // 🔹 Profile dropdown toggle
+    const userPic = document.getElementById("user-pic");
+    const menu = document.getElementById("profile-menu");
+
+    userPic.addEventListener("click", () => {
+      menu.style.display = menu.style.display === "block" ? "none" : "block";
+    });
+
+    // 🔹 Logout
+    document.getElementById("logout-btn").addEventListener("click", () => {
+      signOut(auth).then(() => {
+        alert("Logged out!");
+        window.location.href = "../index.html"; // redirect to homepage
+      }).catch((err) => console.error("Logout error:", err));
+    });
+
+    // --- Fetch from multiple collections ---
+    async function fetchPosts() {
+      try {
+        const collections = ["instagram", "facebook", "linkedin"];
+        let allPosts = [];
+
+        // 🔹 Fetch published posts
+        for (let colName of collections) {
+          const querySnapshot = await getDocs(collection(db, colName));
+          querySnapshot.forEach(doc => {
+            let data = doc.data();
+            data.network = colName;
+            data.status = "published";
+            allPosts.push(data);
+          });
+        }
+
+        // 🔹 Fetch scheduled posts
+        const schedSnap = await getDocs(collection(db, "scheduledPosts"));
+        schedSnap.forEach(doc => {
+          let data = doc.data();
+          data.network = data.networks ? data.networks.join(", ") : "scheduled";
+          data.status = "scheduled";
+          allPosts.push(data);
+        });
+
+        return allPosts;
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+        return [];
+      }
+    }
+
+    // --- DSA Helpers ---
+    function countBy(posts, field) {
+      const map = new Map();
+      posts.forEach(p => {
+        let key = p[field] || "Unknown";
+        map.set(key, (map.get(key) || 0) + 1);
+      });
+      return map;
+    }
+
+    function getTopHashtags(posts, limit = 5) {
+      const freq = new Map();
+      posts.forEach(p => {
+        (p.hashtags || []).forEach(tag => {
+          freq.set(tag, (freq.get(tag) || 0) + 1);
+        });
+      });
+      let arr = Array.from(freq.entries());
+      arr.sort((a, b) => b[1] - a[1]);
+      return arr.slice(0, limit);
+    }
+
+    function getEngagementRate(p) {
+      const likes = Number(p.likes) || 0;
+      const comments = Number(p.comments) || 0;
+      const shares = Number(p.shares) || 0;
+      const views = Number(p.views) || Number(p.reach) || 0;
+      const total = likes + comments + shares;
+      if (views <= 0) return 0;
+      return (total / views) * 100;
+    }
+
+    function summarizeStats(posts) {
+      const published = posts.filter(p => p.status?.toLowerCase() === "published").length;
+      const scheduled = posts.filter(p => p.status?.toLowerCase() === "scheduled").length;
+      const totalPosts = posts.length;
+
+      const engagementSum = posts.reduce((sum, p) => sum + getEngagementRate(p), 0);
+      const avgEngagement = posts.length > 0 ? (engagementSum / posts.length) : 0;
+
+      return { totalPosts, scheduled, published, avgEngagement };
+    }
+
+    // --- NEW FEATURE: Best Performing Posts ---
+    function renderBestPosts(posts) {
+      const withEngagement = posts.map(p => ({ ...p, engagement: getEngagementRate(p) }));
+
+      // ✅ DSA: sort (O(n log n)) → top 3
+      withEngagement.sort((a, b) => b.engagement - a.engagement);
+      const top3 = withEngagement.slice(0, 3);
+
+      let html = "";
+      top3.forEach((p, i) => {
+        html += `
+          <div class="best-post">
+            <img src="${p.imageUrl || 'https://via.placeholder.com/80'}" alt="Post Image">
+            <div class="info">
+              <p><strong>Rank #${i + 1}</strong> (${p.network || "unknown"})</p>
+              <p>${p.caption ? p.caption.substring(0, 50) + "..." : "No caption"}</p>
+              <p>Engagement: ${p.engagement.toFixed(2)}%</p>
+            </div>
+          </div>
+        `;
+      });
+
+      document.getElementById("bestPosts").innerHTML = html;
+    }
+
+    // --- NEW FEATURE: Posting Time Analysis ---
+    function renderPostingTime(posts) {
+      let engagementByHour = {}; // DSA: hashmap {hour -> [engagements]}
+
+      posts.forEach(p => {
+        let ts = p.timestamp || p.createdAt || p.publishedAt;
+        if (ts?.seconds) {
+          let date = new Date(ts.seconds * 1000);
+          let hour = date.getHours();
+          let rate = getEngagementRate(p);
+
+          if (!engagementByHour[hour]) engagementByHour[hour] = [];
+          engagementByHour[hour].push(rate);
+        }
+      });
+
+      // ✅ Compute averages
+      let labels = [];
+      let avgEngagementByHour = [];
+      for (let hour = 0; hour < 24; hour++) {
+        labels.push(hour + ":00");
+        if (engagementByHour[hour]) {
+          let sum = engagementByHour[hour].reduce((a, b) => a + b, 0);
+          avgEngagementByHour.push((sum / engagementByHour[hour].length).toFixed(2));
+        } else {
+          avgEngagementByHour.push(0);
+        }
+      }
+
+      new Chart(document.getElementById("postingTimeAnalysis"), {
+        type: "line",
+        data: {
+          labels: labels,
+          datasets: [{
+            label: "Avg Engagement (%)",
+            data: avgEngagementByHour,
+            borderColor: "blue",
+            backgroundColor: "rgba(0,0,255,0.2)",
+            tension: 0.3,
+            fill: true
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: { beginAtZero: true, title: { display: true, text: "Engagement (%)" } },
+            x: { title: { display: true, text: "Hour of Day" } }
+          }
+        }
+      });
+    }
+
+    // --- Chart Rendering ---
+    function renderCharts(posts) {
+      if (!posts.length) {
+        document.getElementById("statsSummary").innerHTML = "<div class='stat'>⚠️ No posts found</div>";
+        return;
+      }
+
+      const perNetwork = countBy(posts, "network");
+      const scheduledCount = posts.filter(p => p.status?.toLowerCase() === "scheduled").length;
+      const publishedCount = posts.filter(p => p.status?.toLowerCase() === "published").length;
+      const hashtags = getTopHashtags(posts);
+
+      const stats = summarizeStats(posts);
+      document.getElementById("statsSummary").innerHTML = `
+        <div class="stat">Total Posts<br>${stats.totalPosts}</div>
+        <div class="stat">Published<br>${stats.published}</div>
+        <div class="stat">Scheduled<br>${stats.scheduled}</div>
+        <div class="stat">Avg Engagement<br>${stats.avgEngagement.toFixed(2)}%</div>
+      `;
+
+      // --- Chart 1: Posts per Network ---
+      new Chart(document.getElementById("postsPerNetwork"), {
+        type: "bar",
+        data: {
+          labels: [...perNetwork.keys()],
+          datasets: [{
+            label: "Posts",
+            data: [...perNetwork.values()],
+            backgroundColor: ["#E1306C", "#1877F2", "#0A66C2"]
+          }]
+        }
+      });
+
+      // --- Chart 2: Scheduled vs Published ---
+      new Chart(document.getElementById("scheduledVsPublished"), {
+        type: "pie",
+        data: {
+          labels: ["Scheduled", "Published"],
+          datasets: [{
+            data: [scheduledCount, publishedCount],
+            backgroundColor: ["#f39c12", "#27ae60"]
+          }]
+        }
+      });
+
+      // --- Chart 3: Engagement + Likes/Comments/Views trend ---
+      const byDate = {};
+      posts.forEach(p => {
+        let ts = p.timestamp || p.createdAt || p.publishedAt;
+        let date;
+
+        if (ts?.seconds) {
+          date = new Date(ts.seconds * 1000).toLocaleDateString();
+        } else {
+          date = new Date().toLocaleDateString();
+        }
+
+        if (!byDate[date]) {
+          byDate[date] = { engagement: 0, likes: 0, comments: 0, views: 0, count: 0 };
+        }
+
+        byDate[date].engagement += getEngagementRate(p);
+        byDate[date].likes += p.likes || 0;
+        byDate[date].comments += p.comments || 0;
+        byDate[date].views += p.views || 0;
+        byDate[date].count++;
+      });
+
+      const labels = Object.keys(byDate);
+      const engagementData = labels.map(d => byDate[d].engagement / byDate[d].count);
+      const likesData = labels.map(d => byDate[d].likes);
+      const commentsData = labels.map(d => byDate[d].comments);
+      const viewsData = labels.map(d => byDate[d].views);
+
+      new Chart(document.getElementById("engagementTrend"), {
+        type: "line",
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: "Engagement %",
+              data: engagementData,
+              borderColor: "orange",
+              backgroundColor: "rgba(255,165,0,0.3)",
+              yAxisID: "y1"
+            },
+            {
+              label: "Likes",
+              data: likesData,
+              borderColor: "green",
+              backgroundColor: "rgba(0,255,0,0.3)",
+              yAxisID: "y2"
+            },
+            {
+              label: "Comments",
+              data: commentsData,
+              borderColor: "blue",
+              backgroundColor: "rgba(0,0,255,0.3)",
+              yAxisID: "y2"
+            },
+            {
+              label: "Views",
+              data: viewsData,
+              borderColor: "purple",
+              backgroundColor: "rgba(128,0,128,0.3)",
+              yAxisID: "y2"
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y1: {
+              type: "linear",
+              position: "left",
+              title: { display: true, text: "Engagement %" },
+              min: 0,
+              max: 100
+            },
+            y2: {
+              type: "linear",
+              position: "right",
+              title: { display: true, text: "Counts (Likes, Comments, Views)" },
+              grid: { drawOnChartArea: false }
+            }
+          },
+          plugins: {
+            tooltip: {
+              callbacks: {
+                label: function (ctx) {
+                  if (ctx.dataset.label === "Engagement %") {
+                    return `${ctx.parsed.y.toFixed(2)}%`;
+                  }
+                  return `${ctx.dataset.label}: ${ctx.parsed.y}`;
+                }
+              }
+            }
+          }
+        }
+      });
+
+      // --- Chart 4: Top Hashtags ---
+      new Chart(document.getElementById("topHashtags"), {
+        type: "bar",
+        data: {
+          labels: hashtags.map(h => h[0]),
+          datasets: [{
+            label: "Mentions",
+            data: hashtags.map(h => h[1]),
+            backgroundColor: "#9b59b6"
+          }]
+        }
+      });
+
+      // --- NEW CALLS ---
+      renderBestPosts(posts);
+      renderPostingTime(posts);
+    }
+
+    // --- Run ---
+    fetchPosts().then(renderCharts);
+  </script>
+
+
+
+
+
+</body>
+
+</html>
