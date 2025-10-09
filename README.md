@@ -63,7 +63,8 @@ An AI-chatbot safety system that analyzes comments in real-time.
 If a risky or offensive word is detected, it alerts the user before the comment is published — preventing account bans or penalties.
 
 ## 📁 Project File Structure
-<img width="1276" height="1384" alt="image" src="https://github.com/user-attachments/assets/f3f5b6b9-510c-4d8b-b0f0-f2252f276738" />
+<img width="1276" height="1384" alt="image" src="https://github.com/user-attachments/assets/15586d4f-2055-4558-b448-c5d0b6087c4b" />
+
 
 ## ⚙️ Firebase Implementation
 🔹 Firebase Modules Used:
@@ -112,10 +113,12 @@ LinkOrbit fills this gap with:
 - Simplified UI for beginners.
 
 💰 Revenue Model
-<img width="2030" height="610" alt="image" src="https://github.com/user-attachments/assets/025d8427-daa1-4259-9de8-4dd0d805433e" />
+<img width="2030" height="610" alt="image" src="https://github.com/user-attachments/assets/45a7873f-1985-4892-a4c6-2a351c765c46" />
+
 
 ## Target Audience 
-<img width="2022" height="1052" alt="image" src="https://github.com/user-attachments/assets/6a433c71-137e-4a58-9ee1-0b516b047a03" />
+<img width="2022" height="1052" alt="image" src="https://github.com/user-attachments/assets/415ccf89-dbe4-488b-bd56-5e21639e9446" />
+
 
 ## Setup Process
 ### 🔹 Firebase Setup Process
