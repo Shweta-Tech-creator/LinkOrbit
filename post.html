@@ -1,0 +1,1508 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    html {
+      background-color: #0b0f19;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+
+      margin: 0;
+      font-family: "Lemonada", cursive;
+      overflow-x: hidden;
+    }
+
+    .hero-section {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      font-size: 29px;
+      font-weight: 800;
+      background: linear-gradient(90deg, #00d4ff, #ff6a00, #ff1493);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 2px;
+      position: absolute;
+      top: 15px;
+      left: 30px;
+      opacity: 1;
+      transform: scale(1);
+
+    }
+
+    .aura {
+      position: absolute;
+      top: -120px;
+      left: -90px;
+      width: 500px;
+      height: 300px;
+      background: radial-gradient(circle at center,
+          rgba(255, 200, 0, 0.4),
+          rgba(0, 56, 113, 0.35),
+          rgba(80, 0, 43, 0.25),
+          transparent 75%);
+      border-radius: 50%;
+      filter: blur(80px);
+      animation: auraPop 2.5s ease-out forwards;
+      z-index: -1;
+    }
+
+    @keyframes auraPop {
+      0% {
+        transform: scale(0.6);
+        opacity: 0;
+      }
+
+      60% {
+        transform: scale(1.1);
+        opacity: 1;
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: 0.85;
+      }
+    }
+
+    .logo {
+      width: 40px;
+      height: 40px;
+      margin: 0 6px;
+      animation: spin 16s linear infinite;
+    }
+
+    @keyframes spin {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Navbar */
+    .navbar {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: sans-serif;
+    }
+
+    .navbar ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      gap: 80px;
+    }
+
+    .navbar a {
+      text-decoration: none;
+      color: #f0f0f0;
+      font-size: 20px;
+      font-weight: 700;
+      transition: color 0.3s ease;
+    }
+
+    .navbar a:hover {
+      color: #ff6a00;
+    }
+
+    /* 🔹 User profile top-right */
+    #user-info {
+      position: absolute;
+      top: 20px;
+      right: 25px;
+      font-family: Arial, sans-serif;
+      /* ✅ simple font */
+    }
+
+    #user-pic {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid #ff6a00;
+      /* subtle highlight */
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    #user-pic:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 8px rgba(255, 106, 0, 0.6);
+    }
+
+    /* 🔹 Dropdown menu */
+    #profile-menu {
+      position: absolute;
+      top: 60px;
+      right: 20px;
+      background: #11141b;
+      color: #f1f1f1;
+      border-radius: 12px;
+      padding: 15px;
+      width: 230px;
+      display: none;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+      font-family: Arial, sans-serif;
+      animation: fadeSlide 0.25s ease forwards;
+      z-index: 2000;
+    }
+
+    @keyframes fadeSlide {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    #profile-menu p {
+      margin: 6px 0;
+      font-size: 14px;
+      color: #ddd;
+    }
+
+    #profile-menu p strong {
+      font-size: 16px;
+      color: #fff;
+    }
+
+    #profile-menu hr {
+      border: 0;
+      border-top: 1px solid #333;
+      margin: 10px 0;
+    }
+
+    #profile-menu .menu-btn {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border: none;
+      border-radius: 6px;
+      background: #2a2f3a;
+      color: #f0f0f0;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      text-align: left;
+      transition: background 0.2s ease;
+    }
+
+    #profile-menu .menu-btn:hover {
+      background: #ff6a00;
+      color: white;
+    }
+
+    #profile-menu .logout-btn {
+      background: #ff6a00;
+      color: white;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    #profile-menu .logout-btn:hover {
+      background: #ff4500;
+    }
+
+    input.hamburger {
+      display: none;
+    }
+
+    label.hamburger {
+      z-index: 1001;
+      position: fixed;
+      top: 18px;
+      left: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 28px;
+      width: 34px;
+      cursor: pointer;
+    }
+
+    label.hamburger>i,
+    label.hamburger>i::before,
+    label.hamburger>i::after {
+      background: white;
+      border-radius: 2px;
+      content: "";
+      display: block;
+      width: 100%;
+      height: 3px;
+      position: absolute;
+      transition: all 0.3s ease;
+    }
+
+    label.hamburger>i::before {
+      transform: translateY(-8px);
+    }
+
+    label.hamburger>i::after {
+      transform: translateY(8px);
+    }
+
+    input.hamburger:checked+label.hamburger>i {
+      background: transparent;
+    }
+
+    input.hamburger:checked+label.hamburger>i::before {
+      transform: rotate(45deg);
+    }
+
+    input.hamburger:checked+label.hamburger>i::after {
+      transform: rotate(-45deg);
+    }
+
+    /* 🔹 Sidebar (glass style) */
+    .primnav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 300px;
+      padding-top: 70px;
+      background: rgba(13, 24, 48, 0.5);
+      /* navy glass look */
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-right: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 2px 0 15px rgba(0, 0, 0, 0.3);
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+      z-index: 1000;
+      display: flex;
+      /* 👈 add */
+      flex-direction: column;
+      /* 👈 add */
+      justify-content: space-between;
+      /* 👈 pushes last item to bottom */
+    }
+
+    input.hamburger:checked~nav.primnav {
+      transform: translateX(0);
+    }
+
+    /* 🔹 Navigation items */
+    .primnav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      flex-grow: 1;
+      width: 95%;
+    }
+
+    .primnav li {
+      margin: 10px 0;
+    }
+
+    .primnav li a {
+      display: flex;
+      align-items: center;
+      padding: 15px 20px;
+      color: white;
+      font-weight: 600;
+      font-size: 16px;
+      font-family: Arial, sans-serif;
+      text-decoration: none;
+      border-radius: 10px;
+      transition: background 0.3s ease, padding-left 0.3s ease, transform 0.2s ease;
+    }
+
+    .primnav li a:hover {
+      background: rgba(255, 255, 255, 0.15);
+      padding-left: 28px;
+      transform: translateX(5px);
+    }
+
+    /* Dashboard items styling */
+    .dashboard-item {
+      position: relative;
+      margin-left: 15px !important;
+      font-size: 16px !important;
+      font-weight: 500 !important;
+      border-left: 3px solid rgba(255, 106, 0, 0.3);
+      padding-left: 18px !important;
+      margin-bottom: 8px !important;
+    }
+
+    .dashboard-item:hover {
+      border-left-color: #ff6a00;
+      background: rgba(255, 106, 0, 0.1);
+      font-weight: 600 !important;
+    }
+
+    /* Main dashboard title */
+    #dashboard-main {
+      background: linear-gradient(135deg, rgba(255, 106, 0, 0.2), rgba(0, 212, 255, 0.2));
+      border: 1px solid rgba(255, 106, 0, 0.3);
+      margin-bottom: 20px !important;
+      font-weight: 700 !important;
+      font-size: 22px !important;
+      padding: 18px 20px !important;
+    }
+
+    #dashboard-main:hover {
+      background: linear-gradient(135deg, rgba(255, 106, 0, 0.3), rgba(0, 212, 255, 0.3));
+      border-color: #ff6a00;
+    }
+
+    /* 🔹 Submenu */
+    .secnav {
+      margin-left: 20px;
+      border-left: 1px solid rgba(255, 255, 255, 0.2);
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.4s ease;
+    }
+
+    input.hamburger:checked~nav.primnav .secnav {
+      max-height: 300px;
+    }
+
+    .secnav li a {
+      font-size: 14px;
+      padding: 10px 18px;
+      color: #cfd8dc;
+    }
+
+    .secnav li a:hover {
+      color: white;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Move dashboard to bottom-left */
+    .primnav {
+      top: auto !important;
+      bottom: 0 !important;
+      border-top-right-radius: 12px;
+    }
+
+    /* Keep hamburger button near bottom */
+    label.hamburger {
+      top: auto !important;
+      bottom: 20px !important;
+    }
+
+
+    .form-container {
+      font-family: Arial, Helvetica, sans-serif;
+      width: 1200px;
+      background: #1c2541;
+      border-radius: 16px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
+      padding: 35px 40px;
+      transition: all 0.3s ease-in-out;
+      margin-top: -850px;
+      margin-left: 200px;
+      position: relative;
+      z-index: 10;
+    }
+
+    h2 {
+      margin-bottom: 28px;
+      color: #ffffff;
+      text-align: center;
+      font-size: 26px;
+      font-weight: 700;
+    }
+
+    .social-networks {
+      display: flex;
+      gap: 18px;
+      margin-bottom: 24px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .social-networks label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      padding: 10px 18px;
+      border: 1px solid #2b3a67;
+      border-radius: 25px;
+      background: #233554;
+      font-size: 14px;
+      font-weight: 500;
+      transition: 0.25s ease;
+      color: #e2e8f0;
+    }
+
+    .social-networks label:hover {
+      background: #2b3a67;
+      border-color: #3a4f84;
+    }
+
+    .form-group {
+      margin-bottom: 22px;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #cbd5e0;
+      font-size: 15px;
+    }
+
+    input[type="text"],
+    textarea,
+    input[type="file"],
+    input[type="datetime-local"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid #2b3a67;
+      border-radius: 10px;
+      font-size: 15px;
+      transition: 0.3s ease;
+      background: #233554;
+      color: #f7fafc;
+      box-sizing: border-box;
+    }
+
+    input:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #4fd1c5;
+      box-shadow: 0 0 6px rgba(79, 209, 197, 0.5);
+      background: #2b3a67;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .hashtag-box {
+      margin-top: 10px;
+      background: #233554;
+      padding: 14px;
+      border-radius: 10px;
+      font-size: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      min-height: 45px;
+      border: 1px dashed #2b3a67;
+      color: #a0aec0;
+    }
+
+    .hashtag {
+      background: #3182ce;
+      color: #fff;
+      padding: 7px 14px;
+      border-radius: 22px;
+      font-size: 13px;
+      font-weight: 500;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 30px;
+      gap: 20px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 14px 20px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+
+    .btn-publish {
+      background: #3182ce;
+      color: #fff;
+    }
+
+    .btn-schedule {
+      background: #38a169;
+      color: #fff;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 14px rgba(0, 0, 0, 0.25);
+      opacity: 0.95;
+    }
+
+
+
+
+    .form-container {
+      width: 70%;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- First Section -->
+  <div class="hero-section">
+    <div class="brand">
+      <div class="aura"></div>
+      Link
+      <svg class="logo" viewBox="0 0 200 200"></svg>
+      rbit
+    </div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <ul>
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="feature.html">Features</a></li>
+      <li><a href="/features/pricing.html">Pricing/Plans</a></li>
+      <li><a href="/features/about.html">About</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- 🔹 User Info (Pic only) -->
+  <div id="user-info">
+    <img id="user-pic" src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="User">
+  </div>
+
+  <!-- 🔹 Profile Dropdown -->
+  <div id="profile-menu">
+    <p><strong id="user-name">User Name</strong></p>
+    <p id="user-email">user@email.com</p>
+    <hr>
+    <button id="logout-btn" class="menu-btn logout-btn">🚪 Log Out</button>
+
+  </div>
+
+
+
+  <div class="brand">
+    <div class="aura"></div>
+    Link
+    <svg class="logo" viewBox="0 0 200 200">
+      <defs>
+        <linearGradient id="gradYellow" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#FFD700" />
+          <stop offset="100%" stop-color="#FFA500" />
+        </linearGradient>
+        <linearGradient id="gradPink" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#FF69B4" />
+          <stop offset="100%" stop-color="#FF1493" />
+        </linearGradient>
+        <linearGradient id="gradBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#00BFFF" />
+          <stop offset="100%" stop-color="#1E90FF" />
+        </linearGradient>
+        <linearGradient id="gradOrange" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#FF8C00" />
+          <stop offset="100%" stop-color="#FF4500" />
+        </linearGradient>
+      </defs>
+      <path d="M100 20 C140 40, 170 70, 180 100 C170 80, 140 50, 100 40 Z" fill="url(#gradYellow)" />
+      <path d="M180 100 C170 140, 140 170, 100 180 C120 170, 150 140, 160 100 Z" fill="url(#gradPink)" />
+      <path d="M100 180 C60 170, 30 140, 20 100 C40 120, 70 150, 100 160 Z" fill="url(#gradBlue)" />
+      <path d="M20 100 C40 60, 70 30, 100 20 C80 40, 50 70, 40 100 Z" fill="url(#gradOrange)" />
+    </svg> rbit
+  </div>
+
+  <!-- Hamburger Menu -->
+  <input id="hamburger" class="hamburger" type="checkbox" />
+  <label for="hamburger" class="hamburger">
+    <i></i>
+  </label>
+
+  <!-- Sidebar -->
+  <nav class="primnav">
+    <ul>
+      <li style="font-size: 22px; margin-bottom: 20px;"><a href="#dashboard" id="dashboard-main">Dashboard</a></li>
+      <li>
+        <a href="/features/feature.html" class="dashboard-item">Overview </a>
+      </li>
+      <li>
+        <a href="/feeds/unified-feed.html" class="dashboard-item" id="unified-feed">Unified Feed</a>
+      </li>
+      <li>
+        <a href="/feeds/postAndSchedule.html" class="dashboard-item">Post & Schedule</a>
+      </li>
+      <li>
+        <a href="/feeds/analytics.html" class="dashboard-item">Quick Stats + Analytics</a>
+      </li>
+      <li>
+        <a href="/feeds/commentManager.html" class="dashboard-item">Comments Manager</a>
+      </li>
+    </ul>
+  </nav>
+
+
+  <div class="form-container">
+    <h2>Create Social Post</h2>
+
+    <!-- Social Network Selection -->
+    <div class="social-networks">
+      <label><input type="checkbox" name="facebook" value="facebook"> Facebook</label>
+      <label><input type="checkbox" name="instagram" value="instagram"> Instagram</label>
+      <label><input type="checkbox" name="linkedin" value="linkedin"> LinkedIn</label>
+    </div>
+
+    <!-- Title -->
+    <div class="form-group">
+      <label for="title">Post Title</label>
+      <input type="text" id="title" name="title" placeholder="Enter post title">
+    </div>
+
+    <!-- Caption -->
+    <div class="form-group">
+      <label for="caption">Post Caption</label>
+      <textarea id="caption" name="caption" placeholder="Write your post caption..."></textarea>
+    </div>
+
+    <!-- AI Recommended Hashtags -->
+    <div class="form-group">
+      <label>AI Recommended Hashtags</label>
+      <div id="hashtags" class="hashtag-box">
+        <em>Type content to get suggestions...</em>
+      </div>
+    </div>
+
+    <!-- Image Upload -->
+    <div class="form-group">
+      <label for="image">Upload Image</label>
+      <input type="file" id="image" name="image" accept="image/*">
+    </div>
+
+    <!-- Image URL -->
+    <div class="form-group">
+      <label for="imageUrl">Or Enter Image URL</label>
+      <input type="url" id="imageUrl" name="imageUrl" placeholder="https://example.com/image.jpg">
+    </div>
+
+    <!-- Schedule -->
+    <div class="form-group">
+      <label for="schedule">Schedule Date & Time</label>
+      <input type="datetime-local" id="schedule" name="schedule">
+    </div>
+
+    <!-- Buttons -->
+    <div class="buttons">
+      <button class="btn btn-schedule" onclick="handleScheduleClick()">Schedule Post</button>
+      <button class="btn btn-publish" onclick="handlePublishClick()">Publish Post</button>
+      <button class="btn" onclick="viewScheduledPosts()"
+        style="background: #6b46c1; color: white; margin-top: 10px;">View Scheduled Posts</button>
+    </div>
+  </div>
+
+
+  <script>
+    // Global functions for button fallbacks
+    window.handleScheduleClick = function () {
+      console.log("📅 Schedule button clicked!");
+      alert("Schedule button clicked! Check console for details.");
+
+      const title = document.getElementById("title").value.trim();
+      const caption = document.getElementById("caption").value.trim();
+      const scheduleTime = document.getElementById("schedule").value;
+      const networks = [];
+      document.querySelectorAll('.social-networks input[type="checkbox"]:checked').forEach(cb => {
+        networks.push(cb.value);
+      });
+
+      console.log("Form data:", { title, caption, scheduleTime, networks });
+
+      if (!title || !caption || !scheduleTime || networks.length === 0) {
+        alert("⚠️ Please fill all required fields and select at least one network!");
+        return;
+      }
+
+      // Get image URL if provided
+      const imageFile = document.getElementById("image").files[0];
+      const imageUrlInput = document.getElementById("imageUrl").value.trim();
+      let imageUrl = null;
+
+      if (imageFile) {
+        // For global function, we'll store the file info and upload later
+        imageUrl = "pending_upload";
+      } else if (imageUrlInput) {
+        imageUrl = imageUrlInput;
+      }
+
+      // Create post object
+      const now = Date.now();
+      const scheduledTimestamp = new Date(scheduleTime).getTime();
+      const scheduledPost = {
+        id: Date.now(),
+        title,
+        caption,
+        networks,
+        scheduledTime: scheduledTimestamp,
+        scheduledDateTime: scheduleTime,
+        imageUrl: imageUrl,
+        status: "scheduled",
+        createdAt: now,
+        userId: "current-user"
+      };
+
+      // Save to localStorage for auto-posting
+      let scheduledPosts = JSON.parse(localStorage.getItem('scheduledPosts') || '[]');
+      scheduledPosts.push(scheduledPost);
+      localStorage.setItem('scheduledPosts', JSON.stringify(scheduledPosts));
+
+      // Also save to Firestore using the existing Firebase setup
+      if (window.saveToFirestore) {
+        window.saveToFirestore('scheduledPosts', scheduledPost);
+      }
+
+      alert("✅ Post scheduled successfully! It will be posted at " + new Date(scheduleTime).toLocaleString());
+
+      // Clear form
+      document.getElementById("title").value = "";
+      document.getElementById("caption").value = "";
+      document.getElementById("schedule").value = "";
+      document.getElementById("image").value = "";
+      document.getElementById("imageUrl").value = "";
+      document.querySelectorAll('.social-networks input[type="checkbox"]').forEach(cb => cb.checked = false);
+    };
+
+    window.handlePublishClick = function () {
+      console.log("🚀 Publish button clicked!");
+      alert("Publish button clicked! Check console for details.");
+
+      const title = document.getElementById("title").value.trim();
+      const caption = document.getElementById("caption").value.trim();
+      const networks = [];
+      document.querySelectorAll('.social-networks input[type="checkbox"]:checked').forEach(cb => {
+        networks.push(cb.value);
+      });
+
+      if (!title || !caption || networks.length === 0) {
+        alert("⚠️ Enter title, caption, and select networks!");
+        return;
+      }
+
+      // Get image URL if provided
+      const imageFile = document.getElementById("image").files[0];
+      const imageUrlInput = document.getElementById("imageUrl").value.trim();
+      let imageUrl = null;
+
+      if (imageFile) {
+        // For global function, we'll store the file info and upload later
+        imageUrl = "pending_upload";
+      } else if (imageUrlInput) {
+        imageUrl = imageUrlInput;
+      }
+
+      const now = Date.now();
+      // Create post data
+      const postData = {
+        id: Date.now(),
+        title,
+        caption,
+        networks,
+        hashtags: ["#published", "#manual"],
+        createdAt: now,
+        publishedAt: now,
+        publishedDateTime: new Date(now).toISOString(),
+        status: "published",
+        imageUrl: imageUrl,
+        userId: "current-user"
+      };
+
+      // Save to localStorage
+      let publishedPosts = JSON.parse(localStorage.getItem('publishedPosts') || '[]');
+      publishedPosts.push(postData);
+      localStorage.setItem('publishedPosts', JSON.stringify(publishedPosts));
+
+      // Also save to Firestore using the existing Firebase setup
+      if (window.saveToFirestore) {
+        for (const network of networks) {
+          window.saveToFirestore(network, postData);
+        }
+      }
+
+      alert("✅ Post published successfully to: " + networks.join(', '));
+
+      // Clear form
+      document.getElementById("title").value = "";
+      document.getElementById("caption").value = "";
+      document.getElementById("image").value = "";
+      document.getElementById("imageUrl").value = "";
+      document.querySelectorAll('.social-networks input[type="checkbox"]').forEach(cb => cb.checked = false);
+    };
+
+    // Simple auto-posting functionality
+    window.checkAndPostScheduled = function () {
+      const currentTime = Date.now();
+      const scheduledPosts = JSON.parse(localStorage.getItem('scheduledPosts') || '[]');
+      const publishedPosts = JSON.parse(localStorage.getItem('publishedPosts') || '[]');
+
+      console.log("Checking scheduled posts...", scheduledPosts.length);
+
+      const postsToPublish = [];
+      const remainingScheduled = [];
+
+      scheduledPosts.forEach(post => {
+        // Handle both Firestore Timestamp and regular timestamp
+        let scheduledTime;
+        if (post.scheduledTime && typeof post.scheduledTime === 'object' && post.scheduledTime.seconds) {
+          // Firestore Timestamp
+          scheduledTime = post.scheduledTime.seconds * 1000 + Math.floor(post.scheduledTime.nanoseconds / 1000000);
+        } else if (post.scheduledTime) {
+          // Regular timestamp
+          scheduledTime = post.scheduledTime;
+        } else {
+          // Fallback to time field
+          scheduledTime = post.time || 0;
+        }
+
+        console.log("Comparing:", currentTime, ">=", scheduledTime, "?", currentTime >= scheduledTime);
+
+        if (currentTime >= scheduledTime) {
+          console.log("Time to post:", post.title);
+          postsToPublish.push({
+            ...post,
+            status: "published",
+            publishedAt: currentTime
+          });
+        } else {
+          remainingScheduled.push(post);
+        }
+      });
+
+      if (postsToPublish.length > 0) {
+        // Update localStorage
+        const updatedPublished = [...publishedPosts, ...postsToPublish];
+        localStorage.setItem('publishedPosts', JSON.stringify(updatedPublished));
+        localStorage.setItem('scheduledPosts', JSON.stringify(remainingScheduled));
+
+        // Also save to Firestore using the existing Firebase setup
+        if (window.saveToFirestore) {
+          postsToPublish.forEach(post => {
+            const now = Timestamp.now();
+            const postData = {
+              title: post.title,
+              caption: post.caption,
+              hashtags: ["#scheduled", "#automated"],
+              createdAt: now,
+              publishedAt: now,
+              publishedDateTime: now.toDate().toISOString(),
+              status: "published",
+              imageUrl: post.imageUrl || null,
+              userId: "current-user",
+              scheduledPostId: post.id
+            };
+
+            post.networks.forEach(network => {
+              window.saveToFirestore(network, postData);
+            });
+          });
+        }
+
+        console.log(`Auto-posted ${postsToPublish.length} posts!`);
+        alert(`🚀 Auto-posted ${postsToPublish.length} scheduled posts!`);
+      }
+    };
+
+    // Enhanced auto-posting that checks both localStorage and Firestore
+    window.checkAndPostScheduledFromFirestore = async function () {
+      try {
+        console.log("🔍 Checking Firestore scheduled posts...");
+
+        // Get scheduled posts from Firestore
+        const scheduledPostsSnapshot = await getDocs(collection(db, "scheduledPosts"));
+        const currentTime = Date.now();
+        const postsToPublish = [];
+
+        console.log(`📊 Found ${scheduledPostsSnapshot.docs.length} scheduled posts in Firestore`);
+        console.log(`⏰ Current time: ${new Date(currentTime).toLocaleString()}`);
+
+        for (const docSnap of scheduledPostsSnapshot.docs) {
+          const post = docSnap.data();
+          const postId = docSnap.id;
+
+          // Handle Firestore Timestamp
+          let scheduledTime;
+          if (post.scheduledTime && typeof post.scheduledTime === 'object' && post.scheduledTime.seconds) {
+            scheduledTime = post.scheduledTime.seconds * 1000 + Math.floor(post.scheduledTime.nanoseconds / 1000000);
+          } else if (post.scheduledTime) {
+            scheduledTime = post.scheduledTime;
+          } else {
+            continue; // Skip if no valid scheduled time
+          }
+
+          console.log("📝 Firestore post:", post.title, "scheduled for:", new Date(scheduledTime).toLocaleString());
+          console.log(`⏱️ Time comparison: ${currentTime} >= ${scheduledTime} = ${currentTime >= scheduledTime}`);
+
+          if (currentTime >= scheduledTime) {
+            console.log("🚀 Time to publish Firestore post:", post.title);
+
+            // Create published post data
+            const now = Timestamp.now();
+            const publishedPost = {
+              title: post.title,
+              caption: post.caption,
+              hashtags: ["#scheduled", "#automated"],
+              createdAt: now,
+              publishedAt: now,
+              publishedDateTime: now.toDate().toISOString(),
+              status: "published",
+              imageUrl: post.imageUrl || null,
+              userId: "current-user",
+              scheduledPostId: postId
+            };
+
+            // Publish to each network
+            for (const network of post.networks) {
+              await addDoc(collection(db, network), publishedPost);
+              console.log(`Published to ${network}:`, post.title);
+            }
+
+            // Delete from scheduled posts
+            await deleteDoc(doc(db, "scheduledPosts", postId));
+            console.log("Removed from scheduled posts:", post.title);
+          }
+        }
+
+        if (postsToPublish.length > 0) {
+          console.log(`🎉 Auto-published ${postsToPublish.length} posts from Firestore!`);
+          alert(`🚀 Auto-published ${postsToPublish.length} scheduled posts!`);
+        } else {
+          console.log("✅ No posts ready to publish at this time");
+        }
+      } catch (error) {
+        console.error("Error checking Firestore scheduled posts:", error);
+      }
+    };
+
+    // Check for scheduled posts every 10 seconds (for testing)
+    setInterval(() => {
+      console.log("🕐 Auto-checking scheduled posts...");
+      window.checkAndPostScheduled(); // Check localStorage
+      window.checkAndPostScheduledFromFirestore(); // Check Firestore
+    }, 10000); // Changed to 10 seconds for faster testing
+
+    // Also check immediately when page loads
+    setTimeout(() => {
+      console.log("🚀 Initial check for scheduled posts...");
+      window.checkAndPostScheduled(); // Check localStorage
+      window.checkAndPostScheduledFromFirestore(); // Check Firestore
+    }, 1000);
+
+    // Add manual check function for testing
+    window.manualCheckScheduled = function () {
+      console.log("🔍 Manual check triggered...");
+      window.checkAndPostScheduled();
+      window.checkAndPostScheduledFromFirestore();
+    };
+
+    // Add status indicator
+    window.showAutoPostingStatus = function () {
+      console.log("🤖 Auto-posting system is running!");
+      console.log("⏰ Checking every 10 seconds for scheduled posts");
+      console.log("📊 Current time:", new Date().toLocaleString());
+      alert("🤖 Auto-posting system is running!\n⏰ Checking every 10 seconds\n📊 Current time: " + new Date().toLocaleString());
+    };
+
+    // Show status on page load
+    setTimeout(() => {
+      console.log("🤖 Auto-posting system initialized!");
+      console.log("⏰ Will check for scheduled posts every 10 seconds");
+    }, 2000);
+
+    // Function to view scheduled posts
+    window.viewScheduledPosts = function () {
+      const scheduledPosts = JSON.parse(localStorage.getItem('scheduledPosts') || '[]');
+      const publishedPosts = JSON.parse(localStorage.getItem('publishedPosts') || '[]');
+
+      console.log("Scheduled Posts:", scheduledPosts);
+      console.log("Published Posts:", publishedPosts);
+
+      let message = `📅 Scheduled Posts (${scheduledPosts.length}):\n`;
+      scheduledPosts.forEach(post => {
+        const date = new Date(post.scheduledTime).toLocaleString();
+        message += `• ${post.title} - ${date}\n`;
+      });
+
+      message += `\n📤 Published Posts (${publishedPosts.length}):\n`;
+      publishedPosts.forEach(post => {
+        const date = new Date(post.createdAt).toLocaleString();
+        message += `• ${post.title} - ${date}\n`;
+      });
+
+      alert(message);
+    };
+  </script>
+
+  <script type="module">
+    // --- Firebase Imports ---
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getFirestore, collection, addDoc, getDocs, Timestamp, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
+
+    // --- Firebase Config ---
+    const firebaseConfig = {
+      apiKey: "AIzaSyD9ebL8xEeGjHOHxBsUtRY1IL65qm30zD4",
+      authDomain: "social-f6c78.firebaseapp.com",
+      projectId: "social-f6c78",
+      storageBucket: "social-f6c78.appspot.com",
+      messagingSenderId: "959340204769",
+      appId: "1:959340204769:web:0e049a80321ea701a15da0",
+      measurementId: "G-GCWJMNGPGN"
+    };
+
+
+
+
+    // --- Init Firebase ---
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const storage = getStorage(app);
+
+
+
+    // Global Firestore helper function
+    window.saveToFirestore = async function (collectionName, data) {
+      try {
+        await addDoc(collection(db, collectionName), data);
+        console.log(`Saved to ${collectionName} collection:`, data);
+      } catch (err) {
+        console.error(`Error saving to ${collectionName}:`, err);
+      }
+    };
+
+    // ===================================================
+    // 🔹 AUTH LOGIC
+    // ===================================================
+    const userPic = document.getElementById("user-pic");
+    const profileMenu = document.getElementById("profile-menu");
+
+    if (userPic) {
+      userPic.addEventListener("click", () => {
+        profileMenu.style.display =
+          profileMenu.style.display === "block" ? "none" : "block";
+      });
+    }
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        document.getElementById("user-name").textContent = user.displayName || "User";
+        document.getElementById("user-email").textContent = user.email;
+        document.getElementById("user-pic").src =
+          user.photoURL || "https://cdn-icons-png.flaticon.com/512/847/847969.png";
+      } else {
+        window.location.href = "/login.html";
+      }
+    });
+
+    const logoutBtn = document.getElementById("logout-btn");
+    if (logoutBtn) {
+      logoutBtn.addEventListener("click", async () => {
+        try {
+          await signOut(auth);
+          alert("✅ Logged out successfully!");
+          window.location.href = "/login.html";
+        } catch (err) {
+          console.error(err);
+          alert("❌ Logout failed!");
+        }
+      });
+    }
+
+    // ===================================================
+    // 🔹 DSA + HELPERS
+    // ===================================================
+    class TrieNode { constructor() { this.children = {}; this.isEnd = false; } }
+    class Trie {
+      constructor() { this.root = new TrieNode(); }
+      insert(word) { let node = this.root; for (let ch of word) { if (!node.children[ch]) node.children[ch] = new TrieNode(); node = node.children[ch]; } node.isEnd = true; }
+      searchPrefix(prefix) { let node = this.root; for (let ch of prefix) { if (!node.children[ch]) return []; node = node.children[ch]; } return this.collect(node, prefix); }
+      collect(node, prefix) { let results = []; if (node.isEnd) results.push("#" + prefix); for (let ch in node.children) { results = results.concat(this.collect(node.children[ch], prefix + ch)); } return results; }
+    }
+    const hashtagTrie = new Trie();
+    ["fitness", "motivation", "running", "tech", "coding", "innovation", "socialmedia"].forEach(tag => hashtagTrie.insert(tag));
+
+    // MinHeap for scheduling
+    class MinHeap {
+      constructor() { this.data = []; }
+      insert(post) { this.data.push(post); this.bubbleUp(this.data.length - 1); }
+      bubbleUp(index) { while (index > 0) { let parent = Math.floor((index - 1) / 2); if (this.data[parent].time <= this.data[index].time) break;[this.data[parent], this.data[index]] = [this.data[index], this.data[parent]]; index = parent; } }
+      extractMin() { if (this.data.length === 0) return null; const min = this.data[0]; const end = this.data.pop(); if (this.data.length > 0) { this.data[0] = end; this.sinkDown(0); } return min; }
+      sinkDown(index) { let length = this.data.length; let element = this.data[index]; while (true) { let left = 2 * index + 1, right = 2 * index + 2, swap = null; if (left < length && this.data[left].time < element.time) swap = left; if (right < length && this.data[right].time < (swap === null ? element.time : this.data[left].time)) swap = right; if (swap === null) break;[this.data[index], this.data[swap]] = [this.data[swap], this.data[index]]; index = swap; } }
+    }
+    const scheduleHeap = new MinHeap();
+
+    // ===================================================
+    // 🔹 HASHTAG AI SUGGESTIONS
+    // ===================================================
+    const aiHashtags = [
+      "#motivation", "#inspiration", "#fitness", "#health", "#coding", "#developer",
+      "#AI", "#machinelearning", "#startup", "#entrepreneur", "#success", "#hustle",
+      "#travel", "#wanderlust", "#photography", "#nature", "#art", "#design",
+      "#foodie", "#coffee", "#lifestyle", "#mindset", "#growth", "#learning",
+      "#music", "#fashion", "#love", "#positivity", "#innovation", "#creativity",
+      "#digitalnomad", "#tech", "#selfcare", "#wellness", "#blogger", "#contentcreator",
+      "#studentlife", "#career", "#productivity", "#business", "#marketing", "#networking",
+      "#data", "#datascience", "#gaming", "#explore", "#community", "#future", "#trending", "#viral"
+    ];
+
+    function getRandomHashtags(num = 2) {
+      const shuffled = aiHashtags.sort(() => 0.5 - Math.random());
+      return shuffled.slice(0, num);
+    }
+
+    const captionBox = document.getElementById("caption");
+    const hashtagBox = document.getElementById("hashtags");
+
+    if (captionBox) {
+      captionBox.addEventListener("input", () => {
+        let text = captionBox.value.trim().toLowerCase();
+        let words = text.split(" ").filter(w => w.length > 3);
+        let hashtags = [];
+
+        // Generate hashtag suggestions
+        words.forEach(word => hashtags = hashtags.concat(hashtagTrie.searchPrefix(word)));
+
+        if (hashtags.length === 0) {
+          hashtags = getRandomHashtags(2); // fallback
+        }
+
+        hashtags = [...new Set([...hashtags, "#Trending"])];
+        hashtagBox.innerHTML = hashtags.map(tag => `<span class="hashtag">${tag}</span>`).join(" ");
+
+        // ✅ Store hashtags temporarily so we can use them later when saving
+        captionBox.dataset.generatedHashtags = JSON.stringify(hashtags);
+
+      });
+    }
+
+
+
+    // ===================================================
+    // 🔹 IMAGE UPLOAD
+    // ===================================================
+    async function uploadImage(file) {
+      if (!file) return null;
+      const storage = getStorage();
+      const storageRef = ref(storage, "posts/" + Date.now() + "-" + file.name);
+      await uploadBytes(storageRef, file);
+      return await getDownloadURL(storageRef);
+    }
+
+    // Helper function to get image URL from either file upload or direct URL input
+    async function getImageUrl() {
+      const file = document.getElementById("image").files[0];
+      const imageUrl = document.getElementById("imageUrl").value.trim();
+
+      if (file) {
+        // Upload file to Firebase Storage and get URL
+        return await uploadImage(file);
+      } else if (imageUrl) {
+        // Use direct URL
+        return imageUrl;
+      }
+      return null;
+    }
+
+
+
+    // ===================================================
+    // 🔹 FORM BUTTONS
+    // ===================================================
+    function getSelectedSocialNetworks() {
+      const selected = [];
+      document.querySelectorAll('.social-networks input[type="checkbox"]').forEach(checkbox => {
+        if (checkbox.checked) selected.push(checkbox.value);
+      });
+      return selected;
+    }
+
+    // Schedule Post
+    // ===================================================
+    // 🔹 SCHEDULE POST BUTTON
+    // ===================================================
+    function setupScheduleButton() {
+      const scheduleBtn = document.querySelector(".btn-schedule");
+      console.log("Schedule button found:", scheduleBtn); // Debug log
+
+      if (scheduleBtn) {
+        scheduleBtn.addEventListener("click", async (e) => {
+          e.preventDefault();
+          console.log("Schedule button clicked!"); // Debug log
+
+          const title = document.getElementById("title").value.trim();
+          const caption = document.getElementById("caption").value.trim();
+          const scheduleTime = document.getElementById("schedule").value;
+          const networks = getSelectedSocialNetworks();
+
+
+          console.log("Form data:", { title, caption, scheduleTime, networks }); // Debug log
+
+          if (!title || !caption || !scheduleTime || networks.length === 0) {
+            alert("⚠️ Please fill all required fields and select at least one network!");
+            return;
+          }
+
+          try {
+            console.log("Getting image URL for scheduled post...");
+            const imageURL = await getImageUrl();
+            console.log("Image URL for scheduled post:", imageURL);
+
+            const now = Timestamp.now();
+            const scheduledTimestamp = Timestamp.fromDate(new Date(scheduleTime));
+
+
+
+            // ✅ Read hashtags generated from caption input
+            const generatedHashtags = captionBox?.dataset.generatedHashtags
+              ? JSON.parse(captionBox.dataset.generatedHashtags)
+              : [];
+
+            const post = {
+              title,
+              caption,
+              networks,
+              hashtags: generatedHashtags.length > 0 ? generatedHashtags : getRandomHashtags(2),
+              scheduledTime: Timestamp.fromDate(new Date(scheduleTime)), // ✅ Firestore Timestamp
+              scheduledDateTime: scheduleTime,
+              imageUrl: imageURL || null,
+              status: "scheduled",
+              createdAt: Timestamp.now() // ✅ Firestore Timestamp
+            };
+
+
+            console.log("Saving scheduled post to Firestore:", post);
+
+            // Save to Firestore
+            await addDoc(collection(db, "scheduledPosts"), post);
+            console.log("Successfully saved to Firestore scheduledPosts collection");
+
+            // Insert into MinHeap (local runtime scheduling)
+            scheduleHeap.insert(post);
+
+            // Clear form
+            document.getElementById("title").value = "";
+            document.getElementById("caption").value = "";
+            document.getElementById("schedule").value = "";
+            document.getElementById("image").value = "";
+            document.getElementById("imageUrl").value = "";
+            document.querySelectorAll('.social-networks input[type="checkbox"]').forEach(cb => cb.checked = false);
+
+            console.log("Post scheduled successfully!");
+            alert("✅ Post scheduled successfully!");
+          } catch (err) {
+            console.error("❌ Error scheduling post:", err);
+            alert("❌ Failed to schedule post: " + err.message);
+          }
+        });
+      } else {
+        console.error("Schedule button not found!");
+      }
+    }
+
+    // Setup button when DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', setupScheduleButton);
+    } else {
+      setupScheduleButton();
+    }
+
+
+    // Publish Immediately
+    function setupPublishButton() {
+      const publishBtn = document.querySelector(".btn-publish");
+      console.log("Publish button found:", publishBtn); // Debug log
+
+      if (publishBtn) {
+        publishBtn.addEventListener("click", async (e) => {
+          e.preventDefault();
+          console.log("Publish button clicked!"); // Debug log
+
+          const title = document.getElementById("title").value.trim();
+          const caption = document.getElementById("caption").value.trim();
+          const selectedNetworks = getSelectedSocialNetworks();
+
+          console.log("Publish form data:", { title, caption, selectedNetworks }); // Debug log
+
+          if (!title || !caption || selectedNetworks.length === 0) {
+            alert("⚠️ Enter title, caption, and select networks!");
+            return;
+          }
+
+          try {
+            console.log("Getting image URL...");
+            const imageUrl = await getImageUrl();
+            console.log("Image URL:", imageUrl);
+
+            const now = Timestamp.now();
+            let post = {
+              title, caption,
+              hashtags: Array.from(document.querySelectorAll(".hashtag")).map(h => h.textContent),
+              createdAt: now,
+              publishedAt: now,
+              publishedDateTime: now.toDate().toISOString(),
+              status: 'published',
+              imageUrl: imageUrl || null
+            };
+
+            console.log("Post data to publish:", post);
+
+            const publishedTo = [];
+            for (const network of selectedNetworks) {
+              console.log(`Publishing to ${network}...`);
+              await addDoc(collection(db, network), post);
+              publishedTo.push(network);
+              console.log(`Successfully published to ${network}`);
+            }
+
+            // Clear form
+            document.getElementById("title").value = "";
+            document.getElementById("caption").value = "";
+            document.getElementById("image").value = "";
+            document.getElementById("imageUrl").value = "";
+            document.querySelectorAll('.social-networks input[type="checkbox"]').forEach(cb => cb.checked = false);
+
+            console.log("Post published successfully!");
+            alert(`🚀 Published to ${publishedTo.join(', ')}`);
+          } catch (err) {
+            console.error("Firestore Error:", err);
+            alert("❌ Failed to publish post: " + err.message);
+          }
+        });
+      } else {
+        console.error("Publish button not found!");
+      }
+    }
+
+    // Setup button when DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', setupPublishButton);
+    } else {
+      setupPublishButton();
+    }
+
+    // ===================================================
+    // 🔹 FETCH POSTS (Published + Scheduled)
+    // ===================================================
+    async function fetchPosts() {
+      const publishedContainer = document.getElementById("published-posts");
+      const scheduledContainer = document.getElementById("scheduled-posts");
+
+      publishedContainer.innerHTML = "<h3>Published Posts</h3>";
+      scheduledContainer.innerHTML = "<h3>Scheduled Posts</h3>";
+
+      // Published
+      const networks = ["facebook", "linkedin", "instagram"];
+      for (const net of networks) {
+        const snap = await getDocs(collection(db, net));
+        snap.forEach(docSnap => {
+          const post = docSnap.data();
+          const publishTime = post.publishedAt ?
+            (post.publishedAt.toDate ? post.publishedAt.toDate().toLocaleString() : new Date(post.publishedAt).toLocaleString()) :
+            post.publishedDateTime ? new Date(post.publishedDateTime).toLocaleString() :
+              'Unknown';
+          const createdTime = post.createdAt ?
+            (post.createdAt.toDate ? post.createdAt.toDate().toLocaleString() : new Date(post.createdAt).toLocaleString()) :
+            'Unknown';
+          publishedContainer.innerHTML += `
+            <div class="post-card">
+              <h4>${post.title}</h4>
+              <p>${post.caption || post.content}</p>
+              ${post.imageUrl ? `<img src="${post.imageUrl}" width="200">` : ""}
+              <small>Network: ${net} | Created: ${createdTime} | Published: ${publishTime}</small>
+            </div>`;
+        });
+      }
+
+      // Scheduled
+      const schedSnap = await getDocs(collection(db, "scheduledPosts"));
+      schedSnap.forEach(docSnap => {
+        const post = docSnap.data();
+        const scheduleTime = post.scheduledTime ?
+          (post.scheduledTime.toDate ? post.scheduledTime.toDate().toLocaleString() : new Date(post.scheduledTime).toLocaleString()) :
+          post.time ?
+            (post.time.toDate ? post.time.toDate().toLocaleString() : new Date(post.time).toLocaleString()) :
+            'Unknown';
+        const createdTime = post.createdAt ?
+          (post.createdAt.toDate ? post.createdAt.toDate().toLocaleString() : new Date(post.createdAt).toLocaleString()) :
+          'Unknown';
+        scheduledContainer.innerHTML += `
+          <div class="post-card">
+            <h4>${post.title}</h4>
+            <p>${post.caption || post.content}</p>
+            ${post.imageUrl ? `<img src="${post.imageUrl}" width="200">` : ""}
+            <small>Created: ${createdTime} | Scheduled for: ${scheduleTime}</small>
+          </div>`;
+      });
+    }
+
+    async function checkScheduledPosts() {
+      const schedSnap = await getDocs(collection(db, "scheduledPosts"));
+      const now = new Date();
+
+      for (const docSnap of schedSnap.docs) {
+        const post = docSnap.data();
+        const scheduleTime = post.scheduledTime?.toDate ? post.scheduledTime.toDate() : new Date(post.scheduledTime);
+
+        if (scheduleTime && scheduleTime <= now) {
+          const selectedNetworks = post.networks || []; // store networks when scheduling
+          console.log("⏰ Time reached! Publishing scheduled post:", post.title);
+
+          for (const network of selectedNetworks) {
+            await addDoc(collection(db, network), {
+              ...post,
+              publishedAt: Timestamp.now(),
+              status: "published"
+            });
+            console.log(`✅ Moved to ${network}`);
+          }
+
+          // delete from scheduledPosts
+          await deleteDoc(doc(db, "scheduledPosts", docSnap.id));
+          console.log("🗑️ Removed from scheduledPosts");
+        }
+      }
+    }
+
+    // Run every 30 seconds
+    setInterval(checkScheduledPosts, 30000);
+
+
+
+
+  </script>
+
+
+
+
+
+</body>
+
+</html>
