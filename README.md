@@ -5,7 +5,7 @@ It enables users to create, schedule, analyze, and moderate their posts seamless
 
 The platform is built with an elegant dark navy blue theme with yellow-pink gradients, symbolizing trust, innovation, and creativity.
 
-## 💡 Problem Statement
+##  Problem Statement
 
 In today’s digital world, content creators and brands juggle multiple platforms — wasting time logging in separately, analyzing metrics, and responding to comments.
 They also risk posting harmful content without realizing it.
@@ -17,7 +17,7 @@ Challenges:
 - Managing comments manually.
 - Accidentally posting risky or banned content.
 
-## 🚀 Solution
+##  Solution
 
 - LinkOrbit provides an all-in-one platform where users can:
 - Manage multiple social media accounts.
