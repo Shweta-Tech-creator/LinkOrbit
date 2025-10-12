@@ -1,5 +1,7 @@
 ## 🪐 LinkOrbit – Cross-Platform Social Media Aggregator
-## Live Demo : https://link-orbit-one.vercel.app/
+
+[🚀 Live Demo](https://link-orbit-one.vercel.app/)
+
 
 LinkOrbit is a modern social media management platform that unifies content from multiple platforms like Instagram, Facebook, and LinkedIn into a single dashboard.
 It enables users to create, schedule, analyze, and moderate their posts seamlessly — powered by Firebase and AI-driven insights.
