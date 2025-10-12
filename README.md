@@ -185,7 +185,6 @@ Enable Firestore Rules for read/write and deploy your project.
 
 ## 📈 Future Enhancements
 - Real API integration for social media data
-- Advanced AI comment risk prediction
 - Multi-user collaboration dashboard
   
 🚀 How to Run the Project
