@@ -1118,7 +1118,7 @@
         document.getElementById("user-pic").src =
           user.photoURL || "https://cdn-icons-png.flaticon.com/512/847/847969.png";
       } else {
-        window.location.href = "/login.html";
+        window.location.href = "/index.html";
       }
     });
 
@@ -1128,7 +1128,7 @@
         try {
           await signOut(auth);
           alert("✅ Logged out successfully!");
-          window.location.href = "/login.html";
+          window.location.href = "/index.html";
         } catch (err) {
           console.error(err);
           alert("❌ Logout failed!");
