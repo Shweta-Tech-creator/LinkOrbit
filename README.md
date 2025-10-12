@@ -69,7 +69,34 @@ An AI-chatbot safety system that analyzes comments in real-time.
 If a risky or offensive word is detected, it alerts the user before the comment is published — preventing account bans or penalties.
 
 ## 📁 Project File Structure
-<img width="1276" height="1384" alt="image" src="https://github.com/user-attachments/assets/15586d4f-2055-4558-b448-c5d0b6087c4b" />
+SOCIALAGGREGATOR/
+│
+├── asset/ # Images, icons, assets
+│
+├── chatbot/
+│ └── bot.html # AI chatbot risk detector
+│
+├── Dummy-social media/
+│ ├── facebook.html # Dummy Facebook interface
+│ ├── instagram.html # Dummy Instagram interface
+│ └── linkedin.html # Dummy LinkedIn interface
+│
+├── features/
+│ ├── about.html # About LinkOrbit section
+│ ├── feature.html # Main dashboard overview
+│ ├── pricing.html # Pricing & Plans page
+│ └── pricing.css # Pricing page styles
+│
+├── feeds/
+│ ├── unified-feed.html # Unified Feed showing all posts
+│ ├── postAndSchedule.html # Post creation & scheduling
+│ ├── analytics.html # Analytics & performance insights
+│ ├── commentManager.html # Comment Manager page
+│ └── formstyle.css # Feed styling
+│
+├── index.html # Landing page (login/signup + intro)
+├── script.js # Firebase integration & UI logic
+└── README.md # Project documentation
 
 
 ## ⚙️ Firebase Implementation
