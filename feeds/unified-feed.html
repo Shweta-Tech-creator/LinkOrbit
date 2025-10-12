@@ -777,13 +777,13 @@
         document.getElementById("user-pic").src =
           user.photoURL || "https://cdn-icons-png.flaticon.com/512/847/847969.png";
       } else {
-        window.location.href = "/login.html";
+        window.location.href = "/index.html";
       }
     });
 
     document.getElementById("logout-btn")?.addEventListener("click", () => {
       signOut(auth).then(() => {
-        window.location.href = "/login.html";
+        window.location.href = "/index.html";
       });
     });
 
