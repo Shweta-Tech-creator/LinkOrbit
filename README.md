@@ -190,7 +190,7 @@ Enable Firestore Rules for read/write and deploy your project.
   
 🚀 How to Run the Project
 - Clone the repository:
-- git clone git clone https://github.com/Shweta-Tech-creator/LinkOrbit.git
+- git clone https://github.com/Shweta-Tech-creator/LinkOrbit.git
 
 -   ``` cd LinkOrbit ```
 - Open the folder in VS Code.
